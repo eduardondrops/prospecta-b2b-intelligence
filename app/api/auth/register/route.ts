@@ -1,6 +1,7 @@
 import { createSession, database, hashPassword, isValidEmail, normalizeEmail, sessionCookie } from "@/app/lib/auth";
 
 export async function POST(request: Request) {
+  try {
   const body = await request.json().catch(() => null) as { name?: string; company?: string; email?: string; password?: string } | null;
   const name = body?.name?.trim() ?? "";
   const company = body?.company?.trim() ?? "";
@@ -23,4 +24,8 @@ export async function POST(request: Request) {
 
   const session = await createSession(userId);
   return Response.json({ ok: true }, { status: 201, headers: { "Set-Cookie": sessionCookie(session.rawToken), "Cache-Control": "no-store" } });
+  } catch (error) {
+    console.error("registration_failed", error);
+    return Response.json({ error: "O cadastro está temporariamente indisponível. Tente novamente em instantes." }, { status: 503, headers: { "Cache-Control": "no-store" } });
+  }
 }

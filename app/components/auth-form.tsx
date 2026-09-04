@@ -15,19 +15,27 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
     setError("");
     const form = new FormData(event.currentTarget);
     const payload = Object.fromEntries(form.entries());
-    const response = await fetch(`/api/auth/${isRegister ? "register" : "login"}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await response.json() as { error?: string };
-    if (!response.ok) {
-      setError(data.error ?? "Não foi possível concluir. Tente novamente.");
+    try {
+      const response = await fetch(`/api/auth/${isRegister ? "register" : "login"}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const contentType = response.headers.get("content-type") ?? "";
+      const data = contentType.includes("application/json")
+        ? await response.json() as { error?: string }
+        : { error: await response.text() };
+      if (!response.ok) {
+        setError(data.error || "Não foi possível concluir. Tente novamente.");
+        return;
+      }
+      router.push("/workspace");
+      router.refresh();
+    } catch {
+      setError("Não foi possível conectar ao Prospecta. Verifique a publicação do serviço e tente novamente.");
+    } finally {
       setPending(false);
-      return;
     }
-    router.push("/workspace");
-    router.refresh();
   }
 
   return (

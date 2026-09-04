@@ -3,6 +3,7 @@ import { createSession, database, hashPassword, normalizeEmail, secureCompare, s
 type LoginRow = { id: string; password_hash: string; password_salt: string };
 
 export async function POST(request: Request) {
+  try {
   const body = await request.json().catch(() => null) as { email?: string; password?: string } | null;
   const email = normalizeEmail(body?.email ?? "");
   const password = body?.password ?? "";
@@ -14,4 +15,8 @@ export async function POST(request: Request) {
 
   const session = await createSession(user.id);
   return Response.json({ ok: true }, { headers: { "Set-Cookie": sessionCookie(session.rawToken), "Cache-Control": "no-store" } });
+  } catch (error) {
+    console.error("login_failed", error);
+    return Response.json({ error: "O login está temporariamente indisponível. Tente novamente em instantes." }, { status: 503, headers: { "Cache-Control": "no-store" } });
+  }
 }
