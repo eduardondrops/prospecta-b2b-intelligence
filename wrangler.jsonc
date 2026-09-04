@@ -12,6 +12,14 @@
 		"not_found_handling": "none",
 		"binding": "ASSETS"
 	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "prospecta-production",
+			"database_id": "e517ad0b-8447-40f5-8a41-0d4e3279ff81",
+			"migrations_dir": "migrations"
+		}
+	],
 	"cache": {
 		"enabled": true
 	},
@@ -52,3 +60,4 @@
 	 */
 	// "services": [  {   "binding": "MY_SERVICE",   "service": "my-service"  } ]
 }
+

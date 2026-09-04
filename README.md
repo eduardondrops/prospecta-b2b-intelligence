@@ -1,11 +1,11 @@
 # Prospecta B2B Intelligence
 
-A production-minded portfolio case study for transforming fragmented business data into an actionable commercial pipeline.
+An operational SaaS foundation for transforming fragmented business data into an actionable commercial pipeline.
 
 **Live application:** [prospectaworbita.site](https://prospectaworbita.site)
 **Engineering:** Eduardo Nunes — AI Product Engineer · Full-Stack · Data & Cloud Engineering
 
-> This repository is a clean public demonstration. It contains synthetic companies only and does not include customer data, credentials, internal endpoints, or private automation workflows.
+> The account, session, entitlement, and usage-control flows are operational. Searchable companies remain synthetic until an authorized acquisition provider is connected; no customer data, credentials, internal endpoints, or private automation workflows are included.
 
 ## What this project demonstrates
 
@@ -15,6 +15,9 @@ A production-minded portfolio case study for transforming fragmented business da
 - A Cloudflare Workers deployment with source maps, observability, and a custom domain.
 - Automated type checking, dataset safety tests, and production builds in CI.
 - Security and privacy decisions appropriate for a public engineering portfolio.
+- D1-backed accounts, sessions, plan entitlements, and usage events.
+- A seven-day trial restricted to three searches and five results per search.
+- Marketing, pricing, sign-in, sign-up, and authenticated workspace routes.
 
 ## Product slice
 
@@ -57,6 +60,12 @@ npm run dev
 
 Open `http://localhost:3000`. The health endpoint is available at `/api/health`.
 
+Apply the D1 schema before testing authenticated flows:
+
+```bash
+npx wrangler d1 migrations apply prospecta-production --local
+```
+
 ## Quality gates
 
 ```bash
@@ -87,3 +96,4 @@ See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the release and rollback proced
 ## License
 
 MIT © Eduardo Nunes
+
