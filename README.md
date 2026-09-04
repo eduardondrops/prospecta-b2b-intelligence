@@ -1,11 +1,23 @@
 # Prospecta B2B Intelligence
 
-An operational SaaS foundation for transforming fragmented business data into an actionable commercial pipeline.
+An operational SaaS foundation for transforming authorized business data into an actionable, explainable commercial pipeline.
 
 **Live application:** [prospectaworbita.site](https://prospectaworbita.site)
 **Engineering:** Eduardo Nunes — AI Product Engineer · Full-Stack · Data & Cloud Engineering
 
-> The account, session, entitlement, and usage-control flows are operational. Searchable companies remain synthetic until an authorized acquisition provider is connected; no customer data, credentials, internal endpoints, or private automation workflows are included.
+> The account, session, entitlement, and usage-control flows are implemented. Searchable companies remain synthetic until an authorized acquisition provider is connected; no customer data, credentials, internal endpoints, or private automation workflows are included.
+
+## Delivery status
+
+| Capability | Status | Evidence |
+| --- | --- | --- |
+| Marketing, pricing, login, registration, and workspace UI | Complete | Application routes and production build |
+| D1 accounts, sessions, entitlements, and usage events | Complete | Versioned migration and API routes |
+| Seven-day, three-search trial enforcement | Complete | Server-side entitlement checks and tests |
+| Cloudflare zone, Worker, D1, and custom domain | Provisioned | Infrastructure configuration and deployment runbook |
+| Full production interface release | In progress | Bootstrap Worker must be replaced by the application bundle |
+| Authorized live prospect acquisition and enrichment | Planned | Provider selection and compliance review required |
+| Billing and paid plan activation | Planned | Commercial provider not selected |
 
 ## What this project demonstrates
 
@@ -21,7 +33,7 @@ An operational SaaS foundation for transforming fragmented business data into an
 
 ## Product slice
 
-The demo models the commercial review step of a larger prospecting workflow. Users can search and segment companies, inspect explainable qualification signals, and build a temporary shortlist. All displayed metrics are calculated from the visible synthetic dataset; they are not business-performance claims.
+The current release models the commercial review step of a larger prospecting workflow. Users can create an account, sign in, search and segment companies, inspect explainable qualification signals, and use a deliberately restricted trial. All displayed prospect data is synthetic and all visible metrics are derived from that dataset; they are not business-performance claims.
 
 ## Reference architecture
 
@@ -32,13 +44,13 @@ Authorized sources
 n8n orchestration ── normalization ── validation
        │
        ▼
-Typed API ───── PostgreSQL ───── Next.js product UI
+Typed API ───── D1 / PostgreSQL ───── Next.js product UI
                                       │
                                       ▼
                               Cloudflare Workers
 ```
 
-The public build intentionally implements the product slice without external services. The production pattern can add PostgreSQL, authenticated APIs, queues, and audited automation boundaries without changing the UI contract.
+The public build uses D1 for identity, sessions, entitlements, and usage. PostgreSQL remains the planned data platform for richer prospect, enrichment, and analytics workloads once a lawful acquisition source is selected.
 
 ## Technology
 
@@ -89,6 +101,8 @@ See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the release and rollback proced
 ## Engineering documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [Product roadmap](docs/ROADMAP.md)
+- [Product and delivery pipelines](docs/PIPELINES.md)
 - [Security and privacy](SECURITY.md)
 - [Deployment runbook](docs/DEPLOYMENT.md)
 - [ADR 001: public portfolio boundary](docs/adr/001-public-portfolio-boundary.md)
