@@ -31,6 +31,8 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 
 **Objetivo:** transformar a fundação atual em um acesso SaaS administrável e recuperável.
 
+**Status:** implementação e migração D1 concluídas; homologação do remetente, deploy e validação ponta a ponta em produção pendentes.
+
 - Confirmar em navegador o redirecionamento completo da conta proprietária `scale`.
 - Implementar verificação de e-mail, recuperação e troca de senha.
 - Criar revogação de todas as sessões e painel administrativo mínimo de usuários.
@@ -153,13 +155,13 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 
 1. Escolher a fonte real disponível no trial.
 2. Definir os detalhes de permissões por módulo para Essential e Growth além dos limites de leads/WhatsApp.
-3. Homologar um serviço de e-mail transacional para `acesso@prospectaworbita.site`.
-4. Construir o painel administrativo e os testes de entitlement antes da cobrança.
+3. Concluir a homologação do Resend para `acesso@prospectaworbita.site` e validar SPF, DKIM e DMARC.
+4. Validar o painel administrativo da Fase 1 e construir os testes de entitlement da Fase 2 antes da cobrança.
 5. Formalizar termos comerciais e política de cancelamento antes de integrar a Amplo Pay.
 
 ## Não afirmado como pronto
 
-- Verificação de e-mail, recuperação de senha e administração completa de contas.
+- Entrega de e-mail e fluxos completos da Fase 1 em produção até a homologação do remetente e o smoke test.
 - Preços validados, cobrança e assinaturas.
 - Política final de permissões para Essential e Growth.
 - Escala, receita, conversão, retenção ou SLA comprovados.

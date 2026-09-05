@@ -14,7 +14,7 @@ Prospecta models a workflow in which heterogeneous business records are acquired
 | Identity and usage | Store accounts, sessions, plans, and usage events | Cloudflare D1 | Implemented |
 | Prospect persistence | Store prospects, evidence, enrichment, and lists | PostgreSQL | Planned; synthetic fixture today |
 | Product UI | Present, search, explain, and prioritize prospects | Next.js/React | Implemented |
-| Delivery | Build, release, observe, and roll back | Cloudflare Workers | Provisioned; full bundle release in progress |
+| Delivery | Build, release, observe, and roll back | Cloudflare Workers | Provisioned; Phase 1 release candidate validated |
 
 ## Data flow
 
@@ -52,4 +52,4 @@ The application uses the official Cloudflare `vinext` path for the Next.js App R
 
 ## Deliberate exclusions
 
-The public repository excludes live provider credentials, customer datasets, messaging credentials, and private automation exports. Authentication and usage controls are included, while email verification, password recovery, billing, live acquisition, and enrichment remain roadmap items and must not be presented as complete.
+The public repository excludes live provider credentials, customer datasets, messaging credentials, and private automation exports. Authentication, email verification, password recovery, session revocation, account states, administrative audit, and usage controls are implemented. Transactional-email provider configuration and production journey verification remain deployment gates; billing, live acquisition, and enrichment remain roadmap items and must not be presented as complete.

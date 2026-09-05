@@ -61,7 +61,7 @@ Interface original ── seleção ── CSV/webhook/CRM conforme plano
 | Trial Cloudflare | Dataset sintético determinístico | Fonte real autorizada, com máximo de 15 leads por trial |
 | Busca Google original | Implementação existente via n8n | Homologar quotas, custos, retenção e falhas |
 | Base privada original | Implementação existente, somente leitura | Auditar contrato, isolamento e procedência |
-| Identidade e plano | D1 | Administração, recuperação e verificação de e-mail |
+| Identidade e plano | D1 | Homologar e-mail transacional e concluir a verificação produtiva da Fase 1 |
 | Dados operacionais | Supabase e integrações existentes | Formalizar modelo canônico, backup e retenção |
 | Automação | n8n | Versionamento, testes, idempotência e observabilidade |
 
@@ -77,10 +77,10 @@ Interface original ── seleção ── CSV/webhook/CRM conforme plano
 ## 3. Pipeline de contas e permissões
 
 ```text
-Cadastro ── validação ── hash/salt ── usuário trial ── sessão
+Cadastro ── validação ── hash/salt ── usuário trial ── verificação de e-mail
    │
    ▼
-Verificação futura de e-mail
+Login ── sessão revogável ── recuperação de senha
    │
    ▼
 Política central de plano ── funcionalidade ── limite ── uso
@@ -184,3 +184,5 @@ Após uma publicação autorizada, verificar nesta ordem:
 6. Conta `scale` recebe a ponte e chega ao dashboard original.
 7. As páginas, fontes, cores e navegação originais permanecem intactas.
 8. Logs não contêm senha, token, hash, salt ou dados desnecessários.
+9. Sessões podem ser revogadas em `/conta/seguranca` e a ação é auditada.
+10. A conta proprietária verificada acessa `/admin`, altera uma conta descartável e gera `audit_events`.
