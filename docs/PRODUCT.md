@@ -47,20 +47,28 @@ Economizar tempo na prospecção ao permitir que o usuário selecione localizaç
 
 | Plano | Preço | Leads | WhatsApps | Observações |
 | --- | ---: | ---: | ---: | --- |
-| Teste grátis | R$ 0 | até 15 no período de teste | a confirmar | Pode consultar dados reais, salvar e realizar disparos dentro do limite e dos controles de segurança |
-| Essential | R$ 49,90 | 15 por dia | 1 | Conta individual |
-| Growth | R$ 97,90 | 45 por dia | 3 | Conta individual com maior capacidade operacional |
+| Teste grátis | R$ 0 | até 15 em sete dias | 1 | Pode consultar dados reais, salvar e realizar disparos após confirmação manual, dentro dos controles de segurança |
+| Essential | R$ 49,90/mês | 15 por dia | 1 | Conta individual; limite reiniciado diariamente à meia-noite de Brasília |
+| Growth | R$ 97,90/mês | 45 por dia | 3 | Conta individual; limite reiniciado diariamente à meia-noite de Brasília |
 | Scale | Sob consulta | Personalizado | Personalizado | Demanda analisada pelo time comercial; pode incluir solução enterprise |
 
-Os preços de Essential e Growth estão registrados como oferta inicial. Periodicidade, tributos, política de cancelamento e detalhes comerciais ainda precisam ser formalizados antes da cobrança.
+Os limites diários usam o fuso `America/Sao_Paulo` e reiniciam às 00:00. Tributos, política de cancelamento e demais termos comerciais ainda precisam ser formalizados antes da cobrança.
 
 ## Cadastro e administração
 
 - Cadastro individual com verificação de e-mail.
 - Login, logout, recuperação e troca de senha.
 - Painel administrativo para pesquisar usuários, visualizar consumo, alterar plano, suspender/reactivar conta, revogar sessões e acompanhar integrações.
+- Administrador inicial: `eduardonunesdrops@gmail.com`.
 - Nenhum operador administrativo deve visualizar senhas, hashes ou salts.
 - Mudanças administrativas relevantes devem gerar auditoria.
+- A conta administrativa deve ser criada pelo fluxo normal de cadastro/verificação e receber o papel de administrador por uma operação auditável; sua senha não será criada diretamente no banco.
+
+### E-mail transacional
+
+- Remetente pretendido: `acesso@prospectaworbita.site`.
+- Uso inicial: verificação de cadastro, recuperação de senha e alertas essenciais de segurança.
+- Antes da produção: selecionar provedor, verificar domínio, configurar SPF/DKIM/DMARC e tratar expiração, reenvio, bounce e abuso.
 
 ## Disparos e responsabilidade
 
@@ -74,6 +82,8 @@ A plataforma exibirá aviso claro de que o cliente é responsável pelas campanh
 - prevenção de abuso e suspensão administrativa;
 - orientação de LGPD e termos de uso;
 - confirmação explícita antes de iniciar disparos reais.
+
+No trial, toda campanha exige confirmação manual antes de entrar na fila de envio.
 
 ## Pagamentos
 

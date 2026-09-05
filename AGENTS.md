@@ -32,9 +32,11 @@ The access bridge is implemented by `app/api/original-access/route.ts` in this r
 11. Preserve every original module: Google search, private-base search, history, lists, funnel, conversations, WhatsApp, campaigns, and automations. Plans control access and limits; they do not justify deleting modules.
 12. The private source database belongs to the product owner and is always read-only/untouchable. Never migrate, update, delete, enrich in place, or run schema changes against it.
 13. Automated outreach must include an explicit risk/responsibility notice, but a notice is not a substitute for rate limits, opt-out handling, audit logs, abuse prevention, and applicable LGPD/anti-spam controls.
-14. Current commercial baseline: Essential at R$ 49,90 with 15 leads/day and one connected WhatsApp; Growth at R$ 97,90 with 45 leads/day and three connected WhatsApps; Scale is custom and requires commercial review. Billing through Amplo Pay is planned, not implemented.
-15. Trial users may work with at most 15 real leads in total and may save and send to those leads within the trial controls. Do not connect a real data source or outbound channel until its authorization, cost, safety, and failure behavior are documented and tested.
+14. Current commercial baseline: Essential at R$ 49,90/month with 15 leads/day and one connected WhatsApp; Growth at R$ 97,90/month with 45 leads/day and three connected WhatsApps; Scale is custom and requires commercial review. Daily limits reset at 00:00 in `America/Sao_Paulo`. Billing through Amplo Pay is planned, not implemented.
+15. Trial users may work with at most 15 real leads across seven days, connect one WhatsApp, save those leads, and send only after an explicit campaign confirmation. Do not connect a real data source or outbound channel until its authorization, cost, safety, and failure behavior are documented and tested.
 16. Accounts are individual by default. Enterprise organizations, teams, roles, and custom limits require commercial and architecture approval.
+17. The initial platform administrator is `eduardonunesdrops@gmail.com`. Administrative authority must be represented by a role/permission record and audit trail; never create or reset its password through handwritten SQL.
+18. The intended transactional sender is `acesso@prospectaworbita.site`. Do not send production email until the domain, SPF, DKIM, DMARC, provider, templates, bounce handling, and unsubscribe/security behavior are verified.
 
 ## Sources of truth
 

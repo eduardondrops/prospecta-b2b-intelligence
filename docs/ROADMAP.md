@@ -34,6 +34,8 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 - Confirmar em navegador o redirecionamento completo da conta proprietária `scale`.
 - Implementar verificação de e-mail, recuperação e troca de senha.
 - Criar revogação de todas as sessões e painel administrativo mínimo de usuários.
+- Criar o papel administrativo auditável para `eduardonunesdrops@gmail.com`, sem manipulação direta de senha.
+- Homologar `acesso@prospectaworbita.site` com SPF, DKIM e DMARC em um provedor transacional.
 - Definir estados de conta: ativa, suspensa, cancelada e pendente de verificação.
 - Aplicar proteção de origem, rate limiting e bot protection em cadastro e login.
 - Centralizar políticas de plano e remover permissões visuais desconectadas do servidor.
@@ -47,11 +49,11 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 
 **Objetivo:** fazer a plataforma aplicar uma única matriz de planos em todas as APIs e telas.
 
-- Formalizar periodicidade e termos comerciais dos preços.
-- Essential: R$ 49,90, 15 leads/dia e um WhatsApp conectado.
-- Growth: R$ 97,90, 45 leads/dia e três WhatsApps conectados.
+- Formalizar tributos, cancelamento e demais termos comerciais.
+- Essential: R$ 49,90/mês, 15 leads/dia e um WhatsApp conectado.
+- Growth: R$ 97,90/mês, 45 leads/dia e três WhatsApps conectados.
 - Scale: limites, integrações e WhatsApps definidos com o time comercial.
-- Criar política central de entitlements, quotas diárias e reset em horário definido.
+- Criar política central de entitlements e quotas diárias, com reset às 00:00 em `America/Sao_Paulo`.
 - Aplicar limites nas APIs de busca, salvamento, campanhas, exportações e integrações.
 - Exibir uso, saldo, motivo do bloqueio e próximo passo em todas as áreas relevantes.
 - Criar testes de permissão para cada plano.
@@ -63,10 +65,11 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 **Objetivo:** permitir que um potencial cliente entenda o valor sem liberar operação irrestrita.
 
 - Selecionar e homologar uma fonte real autorizada para o trial.
-- Limitar o trial a no máximo 15 leads em todo o período.
+- Limitar o trial a sete dias e no máximo 15 leads em todo o período.
 - Melhorar estados vazios, mensagens de erro e sugestões de pesquisa.
 - Permitir salvar os leads liberados e executar disparos somente para essa amostra.
-- Definir se o trial vincula um WhatsApp próprio ou utiliza outro mecanismo de demonstração.
+- Permitir um WhatsApp conectado no trial.
+- Exigir confirmação manual antes de cada campanha do trial.
 - Criar onboarding guiado e explicação dos resultados/score.
 - Instrumentar ativação, primeira pesquisa e limite atingido sem inventar métricas.
 - Definir chamada comercial após o limite, sem bloquear a experiência antes da primeira entrega de valor.
@@ -148,11 +151,11 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 
 ## Próximas decisões do proprietário
 
-1. Confirmar periodicidade dos preços e horário de reset dos limites diários.
-2. Escolher a fonte real disponível no trial e como o WhatsApp será vinculado no teste.
-3. Definir os detalhes de permissões por módulo para Essential e Growth.
-4. Homologar um serviço de e-mail transacional para verificação e recuperação.
-5. Construir o painel administrativo e os testes de entitlement antes da cobrança.
+1. Escolher a fonte real disponível no trial.
+2. Definir os detalhes de permissões por módulo para Essential e Growth além dos limites de leads/WhatsApp.
+3. Homologar um serviço de e-mail transacional para `acesso@prospectaworbita.site`.
+4. Construir o painel administrativo e os testes de entitlement antes da cobrança.
+5. Formalizar termos comerciais e política de cancelamento antes de integrar a Amplo Pay.
 
 ## Não afirmado como pronto
 
