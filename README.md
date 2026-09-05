@@ -1,4 +1,4 @@
-# Prospecta B2B Intelligence
+# Prospecta Worbita — B2B Intelligence
 
 An operational SaaS foundation for transforming authorized business data into an actionable, explainable commercial pipeline.
 
@@ -15,7 +15,8 @@ An operational SaaS foundation for transforming authorized business data into an
 | D1 accounts, sessions, entitlements, and usage events | Complete | Versioned migration and API routes |
 | Seven-day, three-search trial enforcement | Complete | Server-side entitlement checks and tests |
 | Cloudflare zone, Worker, D1, and custom domain | Provisioned | Infrastructure configuration and deployment runbook |
-| Full production interface release | In progress | Bootstrap Worker must be replaced by the application bundle |
+| Public access layer on Cloudflare | Complete | Live landing, authentication, trial workspace, D1, and custom domain |
+| Original full platform | Published separately | Preserved at `app.prospectaworbita.site` with an authenticated `scale` access bridge |
 | Authorized live prospect acquisition and enrichment | Planned | Provider selection and compliance review required |
 | Billing and paid plan activation | Planned | Commercial provider not selected |
 
@@ -100,6 +101,8 @@ See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the release and rollback proced
 
 ## Engineering documentation
 
+- [Agent operating guide](AGENTS.md)
+- [Product definition](docs/PRODUCT.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Product roadmap](docs/ROADMAP.md)
 - [Product and delivery pipelines](docs/PIPELINES.md)

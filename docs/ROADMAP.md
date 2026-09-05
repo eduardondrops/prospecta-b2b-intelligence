@@ -1,105 +1,162 @@
-# Product roadmap
+# Prospecta — roadmap geral
 
-This roadmap separates verified capabilities from planned work. Dates are deliberately omitted until delivery capacity, data-provider contracts, and commercial priorities are agreed.
+Este roadmap descreve o produto inteiro, incluindo a camada pública no Cloudflare e a plataforma operacional original na Vercel. Datas serão definidas somente depois de priorização, capacidade e custos serem confirmados.
 
-## Product principles
+## Norte do produto
 
-- Acquire and process only authorized business data.
-- Keep qualification evidence explainable and auditable.
-- Enforce tenant isolation, entitlements, and limits on the server.
-- Treat automation as orchestration, not as the system of record.
-- Never expose provider credentials, customer data, or private workflows in the public repository.
-- Promote a release only after automated checks and a production smoke test pass.
+Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis para pessoas que vendem serviços no Brasil, reduzindo o tempo entre a definição do público e o primeiro contato comercial.
 
-## Phase 0 — Product and access foundation
+## Princípios
 
-**Status: complete in source**
+- Preservar a interface e os fluxos originais de `captacao-frontend` até existir autorização expressa para redesenho.
+- Processar apenas dados empresariais obtidos de fontes autorizadas.
+- Aplicar autenticação, isolamento, permissões e consumo no servidor.
+- Manter D1 para identidade/planos e Supabase/PostgreSQL para dados operacionais conforme a arquitetura aprovada.
+- Não publicar métricas, preços, certificações ou capacidades ainda não comprovadas.
+- Não promover uma versão sem testes, smoke test e caminho de rollback.
 
-- Marketing page, positioning, plan comparison, login, registration, and workspace.
-- D1-backed users, sessions, entitlements, and usage events.
-- Password hashing with PBKDF2 and secure session cookies.
-- Seven-day trial restricted to three searches and five results per search.
-- Type checking, automated tests, production build, and GitHub Actions.
-- Independent Cloudflare Worker, D1 database, zone, and custom domain.
+## Estado atual — fundação publicada
 
-**Exit evidence:** a clean build, passing tests, versioned migration, and documented routes.
+**Status: operacional, com pendências de endurecimento**
 
-## Phase 1 — Production-ready showcase
+- Landing page, imagens próprias, planos conceituais, cadastro e login em `prospectaworbita.site`.
+- Usuários, hashes de senha, sessões, planos, validade do trial e consumo armazenados no D1.
+- Trial de sete dias, três pesquisas e até cinco resultados por pesquisa, aplicado no servidor.
+- Cadastro, login, logout, sessão e pesquisa limitada validados em produção.
+- Plataforma original preservada em `app.prospectaworbita.site`.
+- Ponte de acesso: conta `scale` autenticada no domínio principal recebe acesso à plataforma original.
+- Código e documentação versionados nos dois repositórios GitHub.
 
-**Status: in progress**
+## Fase 1 — identidade, segurança e operação confiável
 
-- Replace the provisional bootstrap Worker with the full application bundle.
-- Validate homepage, registration, login, workspace, trial exhaustion, and health endpoint on the custom domain.
-- Add same-origin protection to state-changing endpoints.
-- Add rate limiting and bot protection to registration and login.
-- Add error boundaries, structured logs, release identifiers, and an operational dashboard.
-- Add privacy policy, terms of use, data-source disclosure, and account-deletion flow.
-- Add verified email, password recovery, and session revocation.
+**Objetivo:** transformar a fundação atual em um acesso SaaS administrável e recuperável.
 
-**Exit criteria:** the primary journey works over HTTPS, abuse controls are active, operational errors are observable, and rollback is proven.
+- Confirmar em navegador o redirecionamento completo da conta proprietária `scale`.
+- Implementar verificação de e-mail, recuperação e troca de senha.
+- Criar revogação de todas as sessões e painel administrativo mínimo de usuários.
+- Definir estados de conta: ativa, suspensa, cancelada e pendente de verificação.
+- Aplicar proteção de origem, rate limiting e bot protection em cadastro e login.
+- Centralizar políticas de plano e remover permissões visuais desconectadas do servidor.
+- Adicionar termos, privacidade, consentimento, exclusão e retenção de dados.
+- Criar logs estruturados, alertas essenciais, identificação de release e runbook de incidente.
+- Testar backup e recuperação de D1 e Supabase.
 
-## Phase 2 — Authorized data acquisition
+**Saída:** o proprietário consegue administrar acessos sem SQL manual; o usuário consegue recuperar sua conta; abuso e falhas críticas são observáveis.
 
-**Status: planned**
+## Fase 2 — permissões e oferta comercial
 
-- Select providers based on data rights, coverage, freshness, rate limits, and cost.
-- Define the canonical company, contact, evidence, and source models.
-- Build n8n ingestion workflows with idempotency, bounded retries, and dead-letter handling.
-- Normalize, validate, and deduplicate before persistence.
-- Preserve source, collection time, consent/legal basis where applicable, and field-level provenance.
-- Introduce PostgreSQL for multi-tenant prospect, enrichment, and audit workloads.
+**Objetivo:** fazer a plataforma aplicar uma única matriz de planos em todas as APIs e telas.
 
-**Exit criteria:** every live record is traceable to an authorized source, duplicates are controlled, and tenant access is enforced at every query boundary.
+- Formalizar periodicidade e termos comerciais dos preços.
+- Essential: R$ 49,90, 15 leads/dia e um WhatsApp conectado.
+- Growth: R$ 97,90, 45 leads/dia e três WhatsApps conectados.
+- Scale: limites, integrações e WhatsApps definidos com o time comercial.
+- Criar política central de entitlements, quotas diárias e reset em horário definido.
+- Aplicar limites nas APIs de busca, salvamento, campanhas, exportações e integrações.
+- Exibir uso, saldo, motivo do bloqueio e próximo passo em todas as áreas relevantes.
+- Criar testes de permissão para cada plano.
 
-## Phase 3 — Operational prospecting workflow
+**Saída:** alterar o plano no painel administrativo muda imediatamente os limites reais do usuário, sem edição manual de código ou SQL.
 
-**Status: planned**
+## Fase 3 — experiência gratuita com dados reais
 
-- Saved searches, persistent lists, tags, notes, and ownership.
-- Explainable qualification rules and configurable ideal-customer profiles.
-- Enrichment jobs with visible state, retry, and cost controls.
-- CSV export for eligible plans with audit events.
-- n8n webhooks and signed outbound events.
-- Background queues for acquisition and enrichment workloads.
+**Objetivo:** permitir que um potencial cliente entenda o valor sem liberar operação irrestrita.
 
-**Exit criteria:** an operator can move from criteria to an auditable, reusable prospect list without manual data reconciliation.
+- Selecionar e homologar uma fonte real autorizada para o trial.
+- Limitar o trial a no máximo 15 leads em todo o período.
+- Melhorar estados vazios, mensagens de erro e sugestões de pesquisa.
+- Permitir salvar os leads liberados e executar disparos somente para essa amostra.
+- Definir se o trial vincula um WhatsApp próprio ou utiliza outro mecanismo de demonstração.
+- Criar onboarding guiado e explicação dos resultados/score.
+- Instrumentar ativação, primeira pesquisa e limite atingido sem inventar métricas.
+- Definir chamada comercial após o limite, sem bloquear a experiência antes da primeira entrega de valor.
 
-## Phase 4 — Commercial SaaS
+**Saída:** um novo usuário cadastra-se, executa uma consulta com resultados compreensíveis e entende o próximo passo.
 
-**Status: planned**
+## Fase 4 — unificação funcional controlada
 
-- Select the billing provider and define validated prices; no placeholder prices will be published.
-- Checkout, subscriptions, invoices, webhooks, cancellations, and failed-payment handling.
-- Essential, Growth, and Scale entitlements controlled from one server-side policy.
-- Organization workspaces, invitations, roles, and audit log.
-- CRM/API integrations for eligible plans.
-- Usage, conversion, retention, support, and infrastructure-cost reporting.
+**Objetivo:** ligar identidade, planos e permissões às funcionalidades reais da plataforma original.
 
-**Exit criteria:** paid access is activated and revoked automatically, billing events are idempotent, and plan promises match enforced functionality.
+- Inventariar todas as telas e APIs de `captacao-frontend`.
+- Preservar Busca Google, Base privada, Histórico, Listas, Funil, Conversas, WhatsApp, Campanhas e Automações.
+- Mapear cada ação desses módulos para `trial`, `essential`, `growth` ou `scale`.
+- Substituir decisões espalhadas por uma política de entitlement única e testada.
+- Definir se o acesso por token continuará sendo a fronteira ou será trocado por SSO/sessão compartilhada.
+- Garantir isolamento por `cliente_id` em buscas, históricos, listas, funil e conversas.
+- Exibir uso e limites reais na plataforma original sem alterar sua identidade visual.
 
-## Phase 5 — Intelligence and scale
+**Saída:** cada plano libera exatamente o que foi prometido, com bloqueio no servidor e interface coerente.
 
-**Status: planned**
+## Fase 5 — dados e prospecção em produção
 
-- Assisted research with cited evidence and human review.
-- Semantic matching and explainable recommendations.
-- Feedback loops for qualification quality without silently changing customer data.
-- Provider failover, cost budgets, caching, and regional performance work.
-- Formal backup, recovery, incident response, and service-level objectives.
+**Objetivo:** entregar busca e organização de prospects com origem, qualidade e custos controlados.
 
-**Exit criteria:** intelligence features remain explainable, measured, cost-controlled, and recoverable under production load.
+- Homologar Google Places, base privada e outras fontes autorizadas.
+- Definir modelo canônico de empresa, contato, evidência e origem.
+- Versionar workflows n8n e seus contratos de entrada/saída.
+- Implementar idempotência, timeout, tentativas limitadas e fila de falhas.
+- Normalizar, validar e deduplicar antes de persistir.
+- Registrar procedência, data de coleta e base legal aplicável.
+- Manter a base privada estritamente somente leitura e fora de qualquer migração do SaaS.
+- Definir retenção de resultados temporários e listas permanentes.
+- Monitorar custo e quota por fonte, cliente e plano.
 
-## Near-term priority order
+**Saída:** todo registro operacional é rastreável a uma fonte autorizada e não vaza entre clientes.
 
-1. Publish and verify the full interface on `prospectaworbita.site`.
-2. Complete security, recovery, legal, and observability requirements.
-3. Select one authorized data source and deliver one narrow end-to-end ingestion path.
-4. Add persistent prospect lists and auditable export.
-5. Validate pricing with real users before implementing billing.
+## Fase 6 — disparos responsáveis e campanhas
 
-## Explicitly not claimed
+**Objetivo:** permitir contatos reais com controles de segurança, reputação e conformidade.
 
-- No live acquisition or enrichment provider is connected today.
-- No payment provider or validated pricing is implemented today.
-- No customer or revenue metrics are claimed.
-- No production scale or service-level objective is claimed before measurement.
+- Exibir aviso de responsabilidade e risco de bloqueio do WhatsApp antes da ativação.
+- Implementar limites por conta, plano, número, campanha e janela de tempo.
+- Adicionar opt-out, lista de bloqueio, deduplicação e prevenção de reenvio abusivo.
+- Registrar consentimento operacional, responsável, conteúdo, destinatários e status.
+- Criar suspensão automática e administrativa em sinais de abuso.
+- Testar falhas e reconexão da Evolution API sem duplicar mensagens.
+
+**Saída:** campanhas são rastreáveis, limitadas e interrompíveis; o produto não depende apenas de um aviso de responsabilidade.
+
+## Fase 7 — cobrança e operação comercial
+
+**Objetivo:** vender e operar o SaaS de forma sustentável.
+
+- Validar público-alvo, problema prioritário e proposta de valor.
+- Definir capacidades e preços reais dos três planos.
+- Homologar Amplo Pay, emitir checkout e processar webhooks idempotentes.
+- Ativar, alterar, suspender e cancelar planos automaticamente.
+- Criar organizações, convites, papéis e auditoria.
+- Adicionar integrações de CRM, exportação, webhooks e API conforme plano.
+- Medir ativação, uso, retenção, suporte e custo de infraestrutura.
+
+**Saída:** cobrança e permissões permanecem sincronizadas e as promessas comerciais correspondem ao produto.
+
+## Fase 8 — consolidação em VPS
+
+- Definir arquitetura da VPS Ubuntu e ambientes de homologação/produção.
+- Projetar PostgreSQL próprio para usuários, leads salvos, campanhas e auditoria.
+- Manter a base privada em sua origem e somente leitura.
+- Criar backups externos, restauração testada, gestão de segredos e observabilidade.
+- Implantar CI/CD, migração progressiva e rollback antes de cortar Cloudflare/Vercel/Supabase.
+
+## Fase 9 — inteligência e escala
+
+- Pesquisa assistida com evidências citadas e revisão humana.
+- ICP configurável, score explicável e recomendações rastreáveis.
+- Feedback sobre qualidade sem alterar silenciosamente dados do cliente.
+- Filas, cache, failover de provedores e orçamentos de consumo.
+- SLOs medidos, testes de recuperação e resposta formal a incidentes.
+
+## Próximas decisões do proprietário
+
+1. Confirmar periodicidade dos preços e horário de reset dos limites diários.
+2. Escolher a fonte real disponível no trial e como o WhatsApp será vinculado no teste.
+3. Definir os detalhes de permissões por módulo para Essential e Growth.
+4. Homologar um serviço de e-mail transacional para verificação e recuperação.
+5. Construir o painel administrativo e os testes de entitlement antes da cobrança.
+
+## Não afirmado como pronto
+
+- Verificação de e-mail, recuperação de senha e administração completa de contas.
+- Preços validados, cobrança e assinaturas.
+- Política final de permissões para Essential e Growth.
+- Escala, receita, conversão, retenção ou SLA comprovados.

@@ -1,93 +1,186 @@
-# Product and delivery pipelines
+# Prospecta — pipelines do produto e da entrega
 
-Prospecta has two related pipelines: the business-data pipeline that creates usable prospect intelligence, and the software-delivery pipeline that ships the product safely.
+Este documento descreve quatro fluxos que precisam permanecer coerentes: acesso, dados comerciais, entrega de software e operação de contas.
 
-## Business-data pipeline
+## 1. Pipeline de acesso
 
 ```text
-Authorized source
-      │
-      ▼
-Scoped acquisition request ── correlation ID + tenant + purpose
-      │
-      ▼
-n8n orchestration ── timeout ── bounded retry ── rate-limit control
-      │
-      ▼
-Normalization ── validation ── deduplication ── provenance
-      │
-      ▼
-PostgreSQL system of record ── evidence ── audit events
-      │
-      ▼
-Entitlement-aware API ── qualification rules ── usage accounting
-      │
-      ▼
-Workspace ── saved lists ── export / webhook / CRM by plan
+Visitante
+   │
+   ├── cadastro/login em prospectaworbita.site
+   │       │
+   │       ▼
+   │   Cloudflare Worker ── D1 users/sessions/plans/usage
+   │       │
+   │       ├── trial ───────► até 15 leads no período
+   │       ├── essential ───► 15 leads/dia + 1 WhatsApp
+   │       ├── growth ──────► 45 leads/dia + 3 WhatsApps
+   │       └── scale ───────► limites comerciais + ponte autenticada
+   │                                          │
+   │                                          ▼
+   └────────────────────────────── app.prospectaworbita.site
+                                              │
+                                              ▼
+                              plataforma original + Supabase + n8n
 ```
 
-### Current implementation boundary
+### Controles obrigatórios
 
-| Stage | Current state | Target state |
+- Senha é transformada em hash PBKDF2 no Worker; valor original nunca é armazenado.
+- Cookie de sessão é seguro, HTTP-only e validado no servidor.
+- D1 decide plano, validade e consumo.
+- A ponte só aceita sessão válida e plano autorizado.
+- O token operacional é aleatório, revogável e não deve aparecer em logs.
+- O navegador nunca escolhe `cliente_id` nem recebe credenciais de D1, Supabase ou n8n.
+
+## 2. Pipeline de dados comerciais
+
+```text
+Critérios do usuário + identidade do cliente
+                  │
+                  ▼
+Validação da API ── entitlement ── quota ── correlation ID
+                  │
+                  ▼
+n8n ── fonte autorizada ── timeout ── tentativas limitadas
+                  │
+                  ▼
+Normalização ── validação ── deduplicação ── procedência
+                  │
+                  ▼
+Supabase/PostgreSQL operacional ── histórico ── listas ── auditoria
+                  │
+                  ▼
+Interface original ── seleção ── CSV/webhook/CRM conforme plano
+```
+
+### Fronteira atual
+
+| Componente | Situação atual | Próxima evolução |
 | --- | --- | --- |
-| Acquisition | Synthetic deterministic dataset | Authorized provider APIs/imports |
-| Orchestration | Architectural boundary defined | Versioned n8n workflows |
-| Normalization | Typed fixture model | Provider adapters and canonical contracts |
-| Persistence | D1 for identity, sessions, plans, and usage | PostgreSQL for prospects and enrichment; D1 retained where appropriate |
-| Qualification | Explainable sample signals | Configurable, evidence-backed rules |
-| Delivery to user | Authenticated search with strict trial limits | Saved lists, exports, webhooks, and CRM integrations by plan |
+| Trial Cloudflare | Dataset sintético determinístico | Fonte real autorizada, com máximo de 15 leads por trial |
+| Busca Google original | Implementação existente via n8n | Homologar quotas, custos, retenção e falhas |
+| Base privada original | Implementação existente, somente leitura | Auditar contrato, isolamento e procedência |
+| Identidade e plano | D1 | Administração, recuperação e verificação de e-mail |
+| Dados operacionais | Supabase e integrações existentes | Formalizar modelo canônico, backup e retenção |
+| Automação | n8n | Versionamento, testes, idempotência e observabilidade |
 
-### Processing controls
+### Regras de processamento
 
-- Every job receives a tenant, purpose, correlation identifier, and idempotency key.
-- Retries are bounded and retryable failures are separated from permanent validation failures.
-- Raw provider data is not exposed directly to the product interface.
-- Normalized fields retain source and collection metadata.
-- Plan enforcement and usage accounting occur on the server, not only in the interface.
-- Exports and outbound events create auditable usage records.
+- Cada trabalho carrega cliente, propósito, correlação e idempotência.
+- Falhas permanentes de validação não entram em repetição automática.
+- Respostas de provedores são normalizadas antes de chegar à interface.
+- Campos persistidos conservam origem e data de coleta.
+- Exportações e integrações geram eventos auditáveis.
+- Dados temporários e permanentes têm políticas de retenção diferentes.
 
-## Software-delivery pipeline
+## 3. Pipeline de contas e permissões
 
 ```text
-Issue / roadmap item
-      │
-      ▼
-Small reviewed change
-      │
-      ▼
-Type check ── tests ── production build ── secret/data scan
-      │
-      ▼
-D1 migration review ── Worker dry run ── authenticated deployment
-      │
-      ▼
-HTTPS smoke test ── auth journey ── trial-limit test ── health check
-      │
-      ▼
-Logs + release ID + monitoring
-      │
-      ├── healthy ──► promote and record evidence
-      └── failure ──► rollback to last known-good Worker version
+Cadastro ── validação ── hash/salt ── usuário trial ── sessão
+   │
+   ▼
+Verificação futura de e-mail
+   │
+   ▼
+Política central de plano ── funcionalidade ── limite ── uso
+   │
+   ├── permitido ── executa ── registra evento
+   └── bloqueado ── motivo claro ── próximo passo comercial
 ```
 
-### Quality gates
+Nenhuma permissão deve existir apenas como botão habilitado. A API precisa aplicar a mesma decisão. Alterações manuais por SQL são medidas emergenciais, não o processo administrativo definitivo.
 
-1. `npm ci` succeeds from a clean checkout.
-2. Type checking, tests, and the production build pass.
-3. No secret, private workflow, or live customer dataset enters the repository.
-4. Schema changes are versioned and reviewed before remote migration.
-5. The deployment is associated with a source commit and Cloudflare version.
-6. The primary user journey passes on the custom domain.
-7. A failed primary journey blocks promotion and triggers rollback.
+### Matriz inicial
 
-## Release ownership
+| Operação | Trial | Essential | Growth | Scale |
+| --- | --- | --- | --- | --- |
+| Leads | 15 no período | 15/dia | 45/dia | Contratado |
+| Salvar leads | Dentro do limite | Sim | Sim | Contratado |
+| Disparar | Para leads liberados, com controles | Sim | Sim | Contratado |
+| WhatsApps | A confirmar | 1 | 3 | Contratado |
+| Módulos | Demonstração controlada | Todos, sujeitos a limite | Todos, sujeitos a limite | Definido comercialmente |
 
-| Concern | Source of truth |
+O limite deve ser consumido por lead entregue/salvo conforme regra de negócio aprovada, e não apenas por quantidade de cliques ou requisições técnicas. O reset diário precisa usar um fuso horário definido e ser idempotente.
+
+## 4. Pipeline de campanha e disparo
+
+```text
+Leads autorizados/salvos
+        │
+        ▼
+Seleção ── deduplicação ── opt-out/bloqueio ── limite do plano
+        │
+        ▼
+Confirmação + aviso de responsabilidade
+        │
+        ▼
+Fila/cadência ── WhatsApp conectado ── Evolution API
+        │
+        ▼
+status por destinatário ── auditoria ── histórico ── interrupção
+```
+
+Um aviso sobre spam é obrigatório, mas não libera envio irrestrito. O backend deve controlar cadência, duplicidade, opt-out, suspensão e consumo mesmo que a interface seja manipulada.
+
+## 5. Pipeline de desenvolvimento e publicação
+
+```text
+Roadmap/issue aprovado
+        │
+        ▼
+Escolha do repositório responsável
+        │
+        ▼
+Mudança pequena ── revisão de segurança/dados ── documentação
+        │
+        ▼
+typecheck/lint ── testes ── build ── verificação de segredos
+        │
+        ├── Cloudflare repo ── Worker preview/deploy ── smoke test
+        │
+        └── Vercel repo ───── deployment ───────────── regressão da UI original
+        │
+        ▼
+domínio real ── autenticação ── permissão ── consulta ── logs
+        │
+        ├── saudável ── registra versão e evidência
+        └── falha ───── rollback e investigação
+```
+
+### Gates mínimos
+
+1. Instalação limpa das dependências funciona.
+2. Tipagem/lint, testes relevantes e build passam.
+3. Nenhum segredo, hash, dado de cliente ou workflow privado entra no commit público.
+4. Migração é versionada e revisada antes de ser aplicada remotamente.
+5. Mudança de permissão possui teste de permitido e bloqueado.
+6. A UI original é comparada antes/depois quando `captacao-frontend` muda.
+7. O fluxo afetado é testado no domínio de produção após publicação autorizada.
+8. Existe rollback conhecido para Worker, Vercel e banco.
+
+## Responsabilidade por artefato
+
+| Assunto | Fonte de verdade |
 | --- | --- |
-| Product scope and sequence | `docs/ROADMAP.md` |
-| Runtime and data boundaries | `docs/ARCHITECTURE.md` |
-| Build and test automation | `.github/workflows/ci.yml` |
-| Cloudflare configuration | `wrangler.jsonc` |
-| Database evolution | `migrations/` |
-| Release and rollback procedure | `docs/DEPLOYMENT.md` |
-| Security reporting and public boundaries | `SECURITY.md` |
+| Orientação para agentes | `AGENTS.md` |
+| Sequência do produto | `docs/ROADMAP.md` |
+| Fluxos e gates | `docs/PIPELINES.md` |
+| Limites técnicos e de dados | `docs/ARCHITECTURE.md` |
+| Configuração Cloudflare | `wrangler.jsonc` |
+| Evolução do D1 | `migrations/` |
+| Plataforma completa | repositório `captacao-frontend` |
+| Publicação e rollback | `docs/DEPLOYMENT.md` |
+
+## Smoke test de produção
+
+Após uma publicação autorizada, verificar nesta ordem:
+
+1. Home e imagens carregam em `prospectaworbita.site`.
+2. Cadastro cria uma conta trial sem travar.
+3. Sessão é restaurada e uma pesquisa devolve no máximo cinco resultados.
+4. Consumo passa de três para dois e permanece após novo login.
+5. Trial não abre a plataforma completa.
+6. Conta `scale` recebe a ponte e chega ao dashboard original.
+7. As páginas, fontes, cores e navegação originais permanecem intactas.
+8. Logs não contêm senha, token, hash, salt ou dados desnecessários.
