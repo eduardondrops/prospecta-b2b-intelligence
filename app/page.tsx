@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { DashboardDemo } from "./components/dashboard-demo";
 
 const capabilities = [
@@ -33,10 +34,10 @@ export default function Home() {
           <div className="hero-actions"><a className="button button-primary" href="/inscreva-se">Começar teste grátis <span aria-hidden="true">→</span></a><a className="button button-secondary" href="#demonstracao">Ver demonstração</a></div>
           <p className="disclosure">7 dias · 3 pesquisas · até 5 resultados por pesquisa · sem cartão</p>
         </div>
-        <div className="hero-visual" aria-label="Illustration of the prospecting data pipeline">
-          <div className="radar-grid" aria-hidden="true"><div className="radar-ring ring-one" /><div className="radar-ring ring-two" /><div className="radar-ring ring-three" /><div className="radar-axis axis-x" /><div className="radar-axis axis-y" /><span className="radar-dot dot-one" /><span className="radar-dot dot-two" /><span className="radar-dot dot-three" /><span className="radar-dot dot-four" /></div>
-          <div className="signal-card signal-card-top"><span>QUALIFIED SIGNAL</span><strong>High intent</strong><small>Digital presence + contact fit</small></div>
-          <div className="signal-card signal-card-bottom"><span>PIPELINE STATUS</span><strong>Normalized</strong><small>Ready for commercial review</small></div>
+        <div className="hero-visual">
+          <Image className="hero-image" src="/images/prospecta-hero.png" alt="Ambiente de inteligência comercial exibindo um mapa de empresas e conexões qualificadas" fill priority sizes="(max-width: 900px) 100vw, 48vw" />
+          <div className="signal-card signal-card-top"><span>SINAL QUALIFICADO</span><strong>Potencial identificado</strong><small>Presença digital e contato validados</small></div>
+          <div className="signal-card signal-card-bottom"><span>FLUXO COMERCIAL</span><strong>Pronto para análise</strong><small>Pesquisa, validação e organização</small></div>
         </div>
       </section>
 
@@ -58,10 +59,9 @@ export default function Home() {
 
       <section className="architecture section" id="architecture">
         <div className="architecture-copy"><p className="eyebrow eyebrow-light"><span /> Reference architecture</p><h2>Clear boundaries. Replaceable parts. Observable delivery.</h2><p>The public edition demonstrates the presentation and qualification layer. The production pattern supports external acquisition workflows, API validation, PostgreSQL persistence, and controlled CRM handoff.</p><a className="text-link" href="https://github.com/eduardondrops/prospecta-b2b-intelligence/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noreferrer">Review technical documentation <span aria-hidden="true">↗</span></a></div>
-        <div className="architecture-flow" role="img" aria-label="Data sources flow through orchestration and validation into an API, PostgreSQL, and the web application">
-          <div className="flow-column"><span className="flow-label">INPUT</span><div className="flow-node"><strong>Business sources</strong><small>Public & authorized data</small></div></div><span className="flow-arrow" aria-hidden="true">→</span>
-          <div className="flow-column"><span className="flow-label">PROCESS</span><div className="flow-node accent"><strong>n8n workflows</strong><small>Normalize & validate</small></div></div><span className="flow-arrow" aria-hidden="true">→</span>
-          <div className="flow-column flow-stack"><span className="flow-label">PRODUCT</span><div className="flow-node"><strong>Typed API</strong><small>Business rules</small></div><div className="flow-node"><strong>PostgreSQL</strong><small>Durable state</small></div><div className="flow-node"><strong>Next.js UI</strong><small>Commercial workflow</small></div></div>
+        <div className="operations-visual">
+          <Image src="/images/prospecta-operations.png" alt="Fluxo operacional de empresas pesquisadas, contatos validados e pipeline comercial" fill sizes="(max-width: 900px) 100vw, 55vw" />
+          <div className="operations-caption"><span>OPERAÇÃO CONECTADA</span><strong>Da pesquisa ao acompanhamento comercial</strong></div>
         </div>
       </section>
 

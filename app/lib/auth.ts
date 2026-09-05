@@ -22,6 +22,8 @@ type UserRow = {
 
 const SESSION_COOKIE = "prospecta_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
+// Cloudflare Workers currently caps PBKDF2 iteration counts at 100,000.
+const PASSWORD_PBKDF2_ITERATIONS = 100_000;
 
 export function database() {
   const databaseBinding = (env as Cloudflare.Env & { DB?: D1Database }).DB;
@@ -50,7 +52,7 @@ export async function hashPassword(password: string, saltHex?: string) {
   const salt = saltHex ? hexToBytes(saltHex) : crypto.getRandomValues(new Uint8Array(16));
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
   const bits = await crypto.subtle.deriveBits(
-    { name: "PBKDF2", hash: "SHA-256", salt: salt as BufferSource, iterations: 210_000 },
+    { name: "PBKDF2", hash: "SHA-256", salt: salt as BufferSource, iterations: PASSWORD_PBKDF2_ITERATIONS },
     key,
     256,
   );

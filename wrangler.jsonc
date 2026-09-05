@@ -29,6 +29,9 @@
 	"observability": {
 		"enabled": true
 	},
+	"vars": {
+		"ORIGINAL_APP_URL": "https://app.prospectaworbita.site"
+	},
 	"upload_source_maps": true,
 	"routes": [
 		{
