@@ -34,6 +34,7 @@
 		"logs": { "enabled": true, "head_sampling_rate": 1, "invocation_logs": true },
 		"traces": { "enabled": true, "head_sampling_rate": 0.05 }
 	},
+	"secrets": { "required": ["RESEND_API_KEY"] },
 	"vars": {
 		"ORIGINAL_APP_URL": "https://app.prospectaworbita.site",
 		"APP_BASE_URL": "https://prospectaworbita.site",

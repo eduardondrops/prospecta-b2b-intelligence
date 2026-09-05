@@ -16,7 +16,7 @@
 5. Review the generated Worker configuration with a Wrangler dry run when infrastructure changes.
 6. Confirm the custom domain still belongs to the intended Cloudflare account.
 7. Confirm Wrangler is authenticated with the intended Cloudflare account.
-8. Confirm `RESEND_API_KEY` exists as a Worker secret and the sender domain is verified by the email provider before enabling verification-dependent registration.
+8. Confirm `RESEND_API_KEY` exists as a Worker secret and the sender domain is verified by the email provider before enabling verification-dependent registration. Wrangler declares this secret as required and must reject a release when it is absent.
 
 ## Release
 
