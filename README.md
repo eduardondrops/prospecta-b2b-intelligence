@@ -16,7 +16,7 @@ An operational SaaS foundation for transforming authorized business data into an
 | Seven-day, three-search trial enforcement | Complete | Server-side entitlement checks and tests |
 | Cloudflare zone, Worker, D1, and custom domain | Provisioned | Infrastructure configuration and deployment runbook |
 | Public access layer on Cloudflare | Complete | Live landing, authentication, trial workspace, D1, and custom domain |
-| Original full platform | Published separately | Preserved at `app.prospectaworbita.site` with an authenticated `scale` access bridge |
+| Original full platform | Published separately | Preserved at `app.prospectaworbita.site` with an authenticated, quota-aware access bridge for every plan |
 | Authorized live prospect acquisition and enrichment | Planned | Provider selection and compliance review required |
 | Billing and paid plan activation | Planned | Commercial provider not selected |
 
@@ -29,7 +29,7 @@ An operational SaaS foundation for transforming authorized business data into an
 - Automated type checking, dataset safety tests, and production builds in CI.
 - Security and privacy decisions appropriate for a public engineering portfolio.
 - D1-backed accounts, sessions, plan entitlements, and usage events.
-- A seven-day trial restricted to three searches and five results per search.
+- A three-day trial restricted to three searches and five results per search.
 - Marketing, pricing, sign-in, sign-up, and authenticated workspace routes.
 
 ## Product slice

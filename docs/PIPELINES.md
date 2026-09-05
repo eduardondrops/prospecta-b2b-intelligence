@@ -12,10 +12,10 @@ Visitante
    │       ▼
    │   Cloudflare Worker ── D1 users/sessions/plans/usage
    │       │
-   │       ├── trial ───────► 7 dias + 15 leads totais + 1 WhatsApp
+   │       ├── trial ───────► 3 dias + 15 leads totais + 1 WhatsApp
    │       ├── essential ───► 15 leads/dia + 1 WhatsApp
    │       ├── growth ──────► 45 leads/dia + 3 WhatsApps
-   │       └── scale ───────► limites comerciais + ponte autenticada
+   │       └── scale ───────► limites comerciais personalizados
    │                                          │
    │                                          ▼
    └────────────────────────────── app.prospectaworbita.site
@@ -95,7 +95,7 @@ Nenhuma permissão deve existir apenas como botão habilitado. A API precisa apl
 
 | Operação | Trial | Essential | Growth | Scale |
 | --- | --- | --- | --- | --- |
-| Leads | 15 em sete dias | 15/dia | 45/dia | Contratado |
+| Leads | 15 em três dias | 15/dia | 45/dia | Contratado |
 | Salvar leads | Dentro do limite | Sim | Sim | Contratado |
 | Disparar | Para leads liberados, com controles | Sim | Sim | Contratado |
 | WhatsApps | 1 | 1 | 3 | Contratado |
@@ -180,8 +180,8 @@ Após uma publicação autorizada, verificar nesta ordem:
 2. Cadastro cria uma conta trial sem travar.
 3. Sessão é restaurada e uma pesquisa devolve no máximo cinco resultados.
 4. Consumo passa de três para dois e permanece após novo login.
-5. Trial não abre a plataforma completa.
-6. Conta `scale` recebe a ponte e chega ao dashboard original.
+5. Trial recebe a mesma interface original e tem a quarta pesquisa bloqueada no servidor.
+6. Essential, Growth e Scale recebem a mesma interface com seus limites próprios.
 7. As páginas, fontes, cores e navegação originais permanecem intactas.
 8. Logs não contêm senha, token, hash, salt ou dados desnecessários.
 9. Sessões podem ser revogadas em `/conta/seguranca` e a ação é auditada.

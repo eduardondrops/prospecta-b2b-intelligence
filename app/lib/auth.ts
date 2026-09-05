@@ -146,6 +146,18 @@ export async function createAccountToken(userId: string, purpose: AccountTokenPu
   return { id, rawToken, expiresAt };
 }
 
+export async function createOperationalAccessToken(user: SessionUser) {
+  const rawToken = `${crypto.randomUUID()}.${bytesToHex(crypto.getRandomValues(new Uint8Array(24)))}`;
+  const tokenHash = await hashToken(rawToken);
+  const sessionLimit = Date.now() + SESSION_MAX_AGE * 1000;
+  const trialLimit = user.plan === "trial" ? new Date(user.trialEndsAt).getTime() : sessionLimit;
+  const expiresAt = new Date(Math.min(sessionLimit, Number.isFinite(trialLimit) ? trialLimit : sessionLimit)).toISOString();
+  await database().prepare(
+    "INSERT INTO operational_access_tokens (id, user_id, token_hash, expires_at) VALUES (?, ?, ?, ?)",
+  ).bind(crypto.randomUUID(), user.id, tokenHash, expiresAt).run();
+  return { rawToken, expiresAt };
+}
+
 export async function requireAdmin(request: Request) {
   const user = await currentUser(request);
   return user?.role === "admin" ? user : null;

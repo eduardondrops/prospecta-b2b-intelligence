@@ -25,15 +25,15 @@ The access bridge is implemented by `app/api/original-access/route.ts` in this r
 4. Treat Supabase as the operational store used by the original full application. Never silently migrate or duplicate customer data between stores.
 5. Never read, print, commit, or ask the user to paste passwords, password hashes, salts, service-role keys, API keys, tokens, or private customer data.
 6. Do not change a user's plan, reset credentials, delete an account, run a remote migration, or alter production DNS without explicit authorization.
-7. Trial permissions are enforced server-side: seven days, three searches, and at most five results per search. A trial must be able to complete a useful search.
-8. Full-platform access is currently reserved for the `scale` plan. Other plan promises must not be expanded until the entitlement model and commercial offer are approved.
+7. Trial permissions are enforced server-side: three days, three searches, and at most five results per search. A trial must be able to complete a useful search.
+8. Trial, Essential, Growth, and Scale use the original full-platform interface. Plans differ through server-side quotas and entitlements, not by replacing the interface.
 9. Public demo data in this repository is synthetic. Never present it as customer, revenue, conversion, or acquisition evidence.
 10. Use only authorized business-data sources and retain provenance when live acquisition is introduced.
 11. Preserve every original module: Google search, private-base search, history, lists, funnel, conversations, WhatsApp, campaigns, and automations. Plans control access and limits; they do not justify deleting modules.
 12. The private source database belongs to the product owner and is always read-only/untouchable. Never migrate, update, delete, enrich in place, or run schema changes against it.
 13. Automated outreach must include an explicit risk/responsibility notice, but a notice is not a substitute for rate limits, opt-out handling, audit logs, abuse prevention, and applicable LGPD/anti-spam controls.
 14. Current commercial baseline: Essential at R$ 49,90/month with 15 leads/day and one connected WhatsApp; Growth at R$ 97,90/month with 45 leads/day and three connected WhatsApps; Scale is custom and requires commercial review. Daily limits reset at 00:00 in `America/Sao_Paulo`. Billing through Amplo Pay is planned, not implemented.
-15. Trial users may work with at most 15 real leads across seven days, connect one WhatsApp, save those leads, and send only after an explicit campaign confirmation. Do not connect a real data source or outbound channel until its authorization, cost, safety, and failure behavior are documented and tested.
+15. Trial users may work with at most 15 real leads across three days, connect one WhatsApp, save those leads, and send only after an explicit campaign confirmation. Do not connect a real data source or outbound channel until its authorization, cost, safety, and failure behavior are documented and tested.
 16. Accounts are individual by default. Enterprise organizations, teams, roles, and custom limits require commercial and architecture approval.
 17. The initial platform administrator is `eduardonunesdrops@gmail.com`. Administrative authority must be represented by a role/permission record and audit trail; never create or reset its password through handwritten SQL.
 18. The intended transactional sender is `acesso@prospectaworbita.site`. Do not send production email until the domain, SPF, DKIM, DMARC, provider, templates, bounce handling, and unsubscribe/security behavior are verified.
@@ -93,11 +93,11 @@ A change is complete only when the code builds, relevant tests pass, authorizati
 
 ## Current verified baseline
 
-- `prospectaworbita.site` serves the public site, registration, login, and limited workspace from Cloudflare Workers.
+- `prospectaworbita.site` serves the public site, registration, login, account administration, and entitlement authority from Cloudflare Workers.
 - Registration, logout, login, session restoration, and one restricted trial search were smoke-tested in production.
 - Trial search returns at most five results and decrements the server-side allowance.
 - `app.prospectaworbita.site` is attached to the original Vercel project.
-- A `scale` session requests a short-lived bridge token and is redirected to the original application.
+- Every active verified plan requests a short-lived bridge token and is redirected to the original application; search quotas remain authoritative in D1.
 - The end-to-end redirect for the owner's real account requires a user-performed login test because agents must not know or reset the password.
 
 ## Before starting a new feature

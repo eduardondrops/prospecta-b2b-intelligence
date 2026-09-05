@@ -47,7 +47,7 @@ Economizar tempo na prospecção ao permitir que o usuário selecione localizaç
 
 | Plano | Preço | Leads | WhatsApps | Observações |
 | --- | ---: | ---: | ---: | --- |
-| Teste grátis | R$ 0 | até 15 em sete dias | 1 | Pode consultar dados reais, salvar e realizar disparos após confirmação manual, dentro dos controles de segurança |
+| Teste grátis | R$ 0 | até 15 em três dias | 1 | Pode consultar dados reais, salvar e realizar disparos após confirmação manual, dentro dos controles de segurança |
 | Essential | R$ 49,90/mês | 15 por dia | 1 | Conta individual; limite reiniciado diariamente à meia-noite de Brasília |
 | Growth | R$ 97,90/mês | 45 por dia | 3 | Conta individual; limite reiniciado diariamente à meia-noite de Brasília |
 | Scale | Sob consulta | Personalizado | Personalizado | Demanda analisada pelo time comercial; pode incluir solução enterprise |

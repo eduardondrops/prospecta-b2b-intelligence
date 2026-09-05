@@ -2,17 +2,17 @@
 
 ## Context
 
-Prospecta models a workflow in which heterogeneous business records are acquired from authorized sources, normalized, qualified, stored, and presented to a commercial operator. The current edition implements the SaaS access layer and keeps all displayed prospect data deterministic and inspectable.
+Prospecta models a workflow in which heterogeneous business records are acquired from authorized sources, normalized, qualified, stored, and presented to a commercial operator. The Cloudflare application is the identity and entitlement control plane; the original Vercel application remains the operational interface for every plan.
 
 ## System boundaries
 
 | Layer | Responsibility | Production option | Public demo |
 | --- | --- | --- | --- |
-| Acquisition | Collect authorized source records | Provider APIs and controlled imports | Not connected |
-| Orchestration | Retry, normalize, and route jobs | n8n workflows | Documented boundary |
+| Acquisition | Collect authorized source records | Provider APIs and controlled imports | Connected through the original application |
+| Orchestration | Retry, normalize, and route jobs | n8n workflows | Existing operational boundary |
 | Application API | Validate commands, authenticate users, and enforce entitlements | Typed route handlers | Implemented |
 | Identity and usage | Store accounts, sessions, plans, and usage events | Cloudflare D1 | Implemented |
-| Prospect persistence | Store prospects, evidence, enrichment, and lists | PostgreSQL | Planned; synthetic fixture today |
+| Prospect persistence | Store prospects, evidence, enrichment, and lists | Supabase/PostgreSQL | Existing operational persistence; consolidation planned |
 | Product UI | Present, search, explain, and prioritize prospects | Next.js/React | Implemented |
 | Delivery | Build, release, observe, and roll back | Cloudflare Workers | Provisioned; Phase 1 release candidate validated |
 
@@ -20,8 +20,8 @@ Prospecta models a workflow in which heterogeneous business records are acquired
 
 1. A user authenticates and the API resolves the account, plan, trial expiration, and current allowance.
 2. A search command is rejected server-side when the allowance is exhausted.
-3. During the current showcase phase, the API filters a deterministic synthetic dataset.
-4. In the target pipeline, an acquisition job receives a scoped request and correlation identifier.
+3. The Worker creates a short-lived operational token, stores only its hash in D1, and bridges the verified user to the original application.
+4. Before Google or private-base acquisition, the original application presents that token to the Worker and atomically consumes one permitted search.
 5. Orchestration retrieves authorized records with bounded retries and maps them into a canonical model.
 6. Validation, deduplication, and evidence capture occur before prospect persistence.
 7. The API returns only tenant-authorized records and records the usage event atomically.
@@ -38,9 +38,9 @@ The application uses the official Cloudflare `vinext` path for the Next.js App R
 ## Data ownership
 
 - D1 is the current system of record for users, sessions, plan entitlements, and usage events.
-- The synthetic prospect fixture is a presentation dataset, not a customer database.
-- PostgreSQL is the target system of record for multi-tenant prospect and enrichment data.
-- n8n will orchestrate authorized provider calls; it will not become the system of record.
+- The synthetic prospect fixture remains presentation-only and is no longer the authenticated customer workspace.
+- Supabase/PostgreSQL remains the current operational store; a consolidated self-hosted PostgreSQL architecture is planned.
+- n8n orchestrates authorized provider calls; it is not the system of record.
 
 ## Scalability path
 

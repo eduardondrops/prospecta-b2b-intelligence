@@ -32,7 +32,7 @@ export default function Home() {
           <h1>Encontre empresas com potencial e transforme sinais em oportunidades.</h1>
           <p className="hero-lede">Pesquisa, qualificação e organização de prospects em um fluxo simples, mensurável e pronto para crescer com sua operação.</p>
           <div className="hero-actions"><a className="button button-primary" href="/inscreva-se">Começar teste grátis <span aria-hidden="true">→</span></a><a className="button button-secondary" href="#demonstracao">Ver demonstração</a></div>
-          <p className="disclosure">7 dias · até 15 leads · confirmação manual de disparos · sem cartão</p>
+          <p className="disclosure">3 dias · até 15 leads · confirmação manual de disparos · sem cartão</p>
         </div>
         <div className="hero-visual">
           <Image className="hero-image" src="/images/prospecta-hero.png" alt="Ambiente de inteligência comercial exibindo um mapa de empresas e conexões qualificadas" fill priority sizes="(max-width: 900px) 100vw, 48vw" />
@@ -54,7 +54,7 @@ export default function Home() {
       <section className="pricing section" id="planos">
         <div className="section-heading split-heading"><div><p className="eyebrow"><span /> Planos por maturidade</p><h2>Comece controlado. Evolua quando o processo provar valor.</h2></div><p>Essential e Growth são ofertas mensais para contas individuais. Demandas Scale são definidas com o time comercial.</p></div>
         <div className="pricing-grid">{plans.map((plan) => <article className={plan.featured ? "pricing-card featured" : "pricing-card"} key={plan.name}>{plan.featured ? <span className="popular-label">MAIS COMPLETO</span> : null}<p className="plan-name">{plan.name}</p><h3>{plan.price}</h3><p className="plan-audience">{plan.audience}</p><ul>{plan.features.map((feature) => <li key={feature}><span>✓</span>{feature}</li>)}</ul><a className={plan.featured ? "button button-primary" : "button button-secondary"} href="mailto:contato@prospectaworbita.site?subject=Interesse%20no%20Prospecta%20Worbita">{plan.cta}</a></article>)}</div>
-        <p className="pricing-note">O teste gratuito é limitado a 15 leads em sete dias. Dados reais e disparos serão ativados somente após a homologação das integrações e controles.</p>
+        <p className="pricing-note">O teste gratuito é limitado a 15 leads em três dias. Dados reais e disparos serão ativados somente após a homologação das integrações e controles.</p>
       </section>
 
       <section className="architecture section" id="architecture">

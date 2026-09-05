@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     if (existing) return Response.json({ error: "Já existe uma conta com este e-mail." }, { status: 409 });
 
     const userId = crypto.randomUUID();
-    const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    const trialEndsAt = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
     const passwordData = await hashPassword(password);
     await database().batch([
       database().prepare(

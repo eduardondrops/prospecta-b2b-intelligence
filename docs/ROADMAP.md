@@ -21,10 +21,10 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 
 - Landing page, imagens próprias, planos conceituais, cadastro e login em `prospectaworbita.site`.
 - Usuários, hashes de senha, sessões, planos, validade do trial e consumo armazenados no D1.
-- Trial de sete dias, três pesquisas e até cinco resultados por pesquisa, aplicado no servidor.
+- Trial de três dias, três pesquisas e até cinco resultados por pesquisa, aplicado no servidor.
 - Cadastro, login, logout, sessão e pesquisa limitada validados em produção.
 - Plataforma original preservada em `app.prospectaworbita.site`.
-- Ponte de acesso: conta `scale` autenticada no domínio principal recebe acesso à plataforma original.
+- Ponte de acesso: toda conta ativa e verificada recebe a interface original; o D1 continua aplicando quota por plano.
 - Código e documentação versionados nos dois repositórios GitHub.
 
 ## Fase 1 — identidade, segurança e operação confiável
@@ -33,7 +33,7 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 
 **Status:** implementação e migração D1 concluídas; homologação do remetente, deploy e validação ponta a ponta em produção pendentes.
 
-- Confirmar em navegador o redirecionamento completo da conta proprietária `scale`.
+- Confirmar em navegador o redirecionamento completo da conta proprietária e de uma conta trial.
 - Implementar verificação de e-mail, recuperação e troca de senha.
 - Criar revogação de todas as sessões e painel administrativo mínimo de usuários.
 - Criar o papel administrativo auditável para `eduardonunesdrops@gmail.com`, sem manipulação direta de senha.
@@ -67,7 +67,7 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 **Objetivo:** permitir que um potencial cliente entenda o valor sem liberar operação irrestrita.
 
 - Selecionar e homologar uma fonte real autorizada para o trial.
-- Limitar o trial a sete dias e no máximo 15 leads em todo o período.
+- Limitar o trial a três dias e no máximo 15 leads em todo o período.
 - Melhorar estados vazios, mensagens de erro e sugestões de pesquisa.
 - Permitir salvar os leads liberados e executar disparos somente para essa amostra.
 - Permitir um WhatsApp conectado no trial.
