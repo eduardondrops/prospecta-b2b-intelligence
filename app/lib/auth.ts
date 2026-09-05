@@ -1,6 +1,9 @@
 import { env } from "cloudflare:workers";
 
 export type Plan = "trial" | "essential" | "growth" | "scale";
+export type UserRole = "user" | "admin";
+export type AccountStatus = "active" | "suspended" | "cancelled" | "deletion_requested";
+export type AccountTokenPurpose = "verify_email" | "reset_password";
 
 export type SessionUser = {
   id: string;
@@ -9,6 +12,9 @@ export type SessionUser = {
   email: string;
   plan: Plan;
   trialEndsAt: string;
+  role: UserRole;
+  status: AccountStatus;
+  emailVerifiedAt: string;
 };
 
 type UserRow = {
@@ -18,6 +24,9 @@ type UserRow = {
   email: string;
   plan: Plan;
   trial_ends_at: string;
+  role: UserRole;
+  status: AccountStatus;
+  email_verified_at: string;
 };
 
 const SESSION_COOKIE = "prospecta_session";
@@ -65,10 +74,11 @@ export async function hashToken(token: string) {
 }
 
 export function secureCompare(left: string, right: string) {
-  if (left.length !== right.length) return false;
-  let mismatch = 0;
-  for (let index = 0; index < left.length; index += 1) mismatch |= left.charCodeAt(index) ^ right.charCodeAt(index);
-  return mismatch === 0;
+  const leftBytes = hexToBytes(left);
+  const rightBytes = hexToBytes(right);
+  if (leftBytes.byteLength !== rightBytes.byteLength || leftBytes.byteLength === 0) return false;
+  const workerSubtle = crypto.subtle as SubtleCrypto & { timingSafeEqual(a: BufferSource, b: BufferSource): boolean };
+  return workerSubtle.timingSafeEqual(leftBytes, rightBytes);
 }
 
 export async function createSession(userId: string) {
@@ -99,12 +109,46 @@ export async function currentUser(request: Request): Promise<SessionUser | null>
   if (!token) return null;
   const tokenHash = await hashToken(token);
   const row = await database().prepare(
-    `SELECT u.id, u.name, u.company, u.email, u.plan, u.trial_ends_at
+    `SELECT u.id, u.name, u.company, u.email, u.plan, u.trial_ends_at, u.role, u.status, u.email_verified_at
      FROM sessions s JOIN users u ON u.id = s.user_id
-     WHERE s.token_hash = ? AND s.expires_at > CURRENT_TIMESTAMP`,
+     WHERE s.token_hash = ? AND s.expires_at > CURRENT_TIMESTAMP AND s.revoked_at IS NULL
+       AND u.status = 'active' AND u.email_verified_at IS NOT NULL`,
   ).bind(tokenHash).first<UserRow>();
   if (!row) return null;
-  return { id: row.id, name: row.name, company: row.company, email: row.email, plan: row.plan, trialEndsAt: row.trial_ends_at };
+  await database().prepare("UPDATE sessions SET last_seen_at = CURRENT_TIMESTAMP WHERE token_hash = ?").bind(tokenHash).run();
+  return {
+    id: row.id,
+    name: row.name,
+    company: row.company,
+    email: row.email,
+    plan: row.plan,
+    trialEndsAt: row.trial_ends_at,
+    role: row.role,
+    status: row.status,
+    emailVerifiedAt: row.email_verified_at,
+  };
+}
+
+export function initialAdminEmail() {
+  const bindings = env as Cloudflare.Env & { INITIAL_ADMIN_EMAIL?: string };
+  return normalizeEmail(bindings.INITIAL_ADMIN_EMAIL ?? "eduardonunesdrops@gmail.com");
+}
+
+export async function createAccountToken(userId: string, purpose: AccountTokenPurpose, ttlSeconds: number) {
+  const rawToken = `${crypto.randomUUID()}.${bytesToHex(crypto.getRandomValues(new Uint8Array(24)))}`;
+  const tokenHash = await hashToken(rawToken);
+  const expiresAt = new Date(Date.now() + ttlSeconds * 1000).toISOString();
+  const id = crypto.randomUUID();
+  await database().batch([
+    database().prepare("UPDATE account_tokens SET consumed_at = CURRENT_TIMESTAMP WHERE user_id = ? AND purpose = ? AND consumed_at IS NULL").bind(userId, purpose),
+    database().prepare("INSERT INTO account_tokens (id, user_id, purpose, token_hash, expires_at) VALUES (?, ?, ?, ?, ?)").bind(id, userId, purpose, tokenHash, expiresAt),
+  ]);
+  return { id, rawToken, expiresAt };
+}
+
+export async function requireAdmin(request: Request) {
+  const user = await currentUser(request);
+  return user?.role === "admin" ? user : null;
 }
 
 export const planLimits: Record<Plan, { searches: number; results: number; export: boolean; enrichment: boolean; automation: boolean }> = {

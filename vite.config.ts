@@ -17,4 +17,7 @@ export default defineConfig({
       },
     }),
   ],
+  resolve: process.env.VITEST
+    ? { alias: { "cloudflare:workers": "/app/lib/testing/cloudflare-workers-stub.ts" } }
+    : undefined,
 });

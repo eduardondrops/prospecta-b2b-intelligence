@@ -10,9 +10,9 @@ const capabilities = [
 const stack = ["Next.js", "React", "TypeScript", "Cloudflare Workers", "PostgreSQL", "n8n", "REST APIs", "CI/CD"];
 
 const plans = [
-  { name: "Essential", audience: "Para validar um processo comercial recorrente", features: ["150 pesquisas por mês", "Até 25 resultados por pesquisa", "Listas e exportação CSV", "1 usuário"], cta: "Solicitar acesso" },
-  { name: "Growth", audience: "Para times que precisam escalar prospecção", features: ["1.000 pesquisas por mês", "Até 100 resultados por pesquisa", "Enriquecimento e exportações", "n8n, webhooks e 5 usuários"], cta: "Falar sobre o Growth", featured: true },
-  { name: "Scale", audience: "Para operações com integração e governança", features: ["Limites personalizados", "API e integração com CRM", "Papéis, auditoria e equipes", "Suporte de implantação"], cta: "Desenhar plano Scale" },
+  { name: "Essential", price: "R$ 49,90/mês", audience: "Para começar uma rotina comercial controlada", features: ["15 leads por dia", "1 WhatsApp conectado", "Todos os módulos com limites do plano", "Conta individual"], cta: "Começar no Essential" },
+  { name: "Growth", price: "R$ 97,90/mês", audience: "Para ampliar a prospecção e os disparos", features: ["45 leads por dia", "3 WhatsApps conectados", "Todos os módulos com limites do plano", "Conta individual"], cta: "Começar no Growth", featured: true },
+  { name: "Scale", price: "Sob consulta", audience: "Para demandas personalizadas ou enterprise", features: ["Limites sob análise", "WhatsApps conforme demanda", "Integrações e operação personalizadas", "Atendimento comercial"], cta: "Falar com o time comercial" },
 ];
 
 export const revalidate = 300;
@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <main>
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="Prospecta home"><span className="brand-mark" aria-hidden="true">P</span><span>PROSPECTA</span></a>
+        <a className="brand" href="#top" aria-label="Prospecta Worbita home"><span className="brand-mark" aria-hidden="true">P</span><span>PROSPECTA WORBITA</span></a>
         <nav aria-label="Navegação principal"><a href="#plataforma">Plataforma</a><a href="#demonstracao">Demonstração</a><a href="#planos">Planos</a></nav>
         <div className="header-actions"><a className="header-login" href="/login">Entrar</a><a className="header-cta" href="/inscreva-se">Teste grátis <span aria-hidden="true">→</span></a></div>
       </header>
@@ -32,7 +32,7 @@ export default function Home() {
           <h1>Encontre empresas com potencial e transforme sinais em oportunidades.</h1>
           <p className="hero-lede">Pesquisa, qualificação e organização de prospects em um fluxo simples, mensurável e pronto para crescer com sua operação.</p>
           <div className="hero-actions"><a className="button button-primary" href="/inscreva-se">Começar teste grátis <span aria-hidden="true">→</span></a><a className="button button-secondary" href="#demonstracao">Ver demonstração</a></div>
-          <p className="disclosure">7 dias · 3 pesquisas · até 5 resultados por pesquisa · sem cartão</p>
+          <p className="disclosure">7 dias · até 15 leads · confirmação manual de disparos · sem cartão</p>
         </div>
         <div className="hero-visual">
           <Image className="hero-image" src="/images/prospecta-hero.png" alt="Ambiente de inteligência comercial exibindo um mapa de empresas e conexões qualificadas" fill priority sizes="(max-width: 900px) 100vw, 48vw" />
@@ -52,9 +52,9 @@ export default function Home() {
       </section>
 
       <section className="pricing section" id="planos">
-        <div className="section-heading split-heading"><div><p className="eyebrow"><span /> Planos por maturidade</p><h2>Comece controlado. Evolua quando o processo provar valor.</h2></div><p>Os preços serão definidos antes da abertura comercial. As capacidades abaixo já estabelecem limites claros entre experimentação, operação e escala.</p></div>
-        <div className="pricing-grid">{plans.map((plan) => <article className={plan.featured ? "pricing-card featured" : "pricing-card"} key={plan.name}>{plan.featured ? <span className="popular-label">MAIS COMPLETO</span> : null}<p className="plan-name">{plan.name}</p><h3>Preço sob consulta</h3><p className="plan-audience">{plan.audience}</p><ul>{plan.features.map((feature) => <li key={feature}><span>✓</span>{feature}</li>)}</ul><a className={plan.featured ? "button button-primary" : "button button-secondary"} href="mailto:contato@prospectaworbita.site?subject=Interesse%20no%20Prospecta">{plan.cta}</a></article>)}</div>
-        <p className="pricing-note">O teste grátis é deliberadamente limitado e não inclui exportação, enriquecimento, API ou automações.</p>
+        <div className="section-heading split-heading"><div><p className="eyebrow"><span /> Planos por maturidade</p><h2>Comece controlado. Evolua quando o processo provar valor.</h2></div><p>Essential e Growth são ofertas mensais para contas individuais. Demandas Scale são definidas com o time comercial.</p></div>
+        <div className="pricing-grid">{plans.map((plan) => <article className={plan.featured ? "pricing-card featured" : "pricing-card"} key={plan.name}>{plan.featured ? <span className="popular-label">MAIS COMPLETO</span> : null}<p className="plan-name">{plan.name}</p><h3>{plan.price}</h3><p className="plan-audience">{plan.audience}</p><ul>{plan.features.map((feature) => <li key={feature}><span>✓</span>{feature}</li>)}</ul><a className={plan.featured ? "button button-primary" : "button button-secondary"} href="mailto:contato@prospectaworbita.site?subject=Interesse%20no%20Prospecta%20Worbita">{plan.cta}</a></article>)}</div>
+        <p className="pricing-note">O teste gratuito é limitado a 15 leads em sete dias. Dados reais e disparos serão ativados somente após a homologação das integrações e controles.</p>
       </section>
 
       <section className="architecture section" id="architecture">
@@ -66,7 +66,7 @@ export default function Home() {
       </section>
 
       <section className="stack-strip" aria-label="Technology stack"><p>ENGINEERING STACK</p><div>{stack.map((item) => <span key={item}>{item}</span>)}</div></section>
-      <footer><div><span className="footer-mark">P</span><div><strong>Prospecta</strong><p>Plataforma de inteligência B2B</p></div></div><p>Produto e engenharia por Eduardo Nunes · AI Product Engineer</p><div className="footer-links"><a href="/login">Entrar</a><a href="https://github.com/eduardondrops" target="_blank" rel="noreferrer">GitHub ↗</a></div></footer>
+      <footer><div><span className="footer-mark">P</span><div><strong>Prospecta Worbita</strong><p>Plataforma de inteligência B2B</p></div></div><p>Produto e engenharia por Eduardo Nunes · AI Product Engineer</p><div className="footer-links"><a href="/termos">Termos</a><a href="/privacidade">Privacidade</a><a href="/login">Entrar</a><a href="https://github.com/eduardondrops" target="_blank" rel="noreferrer">GitHub ↗</a></div></footer>
     </main>
   );
 }
