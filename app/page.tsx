@@ -70,7 +70,7 @@ export default function Home() {
       <section className="stack-strip" aria-label="Tecnologias de engenharia"><p>TECNOLOGIAS</p><StackLogos /></section>
       <footer>
         <div className="footer-product"><span className="footer-mark" aria-hidden="true">P</span><div><strong>Prospecta Worbita</strong><p>Plataforma de inteligência B2B</p></div></div>
-        <a className="ambern-credit" href="https://ambern.dev" target="_blank" rel="noreferrer" aria-label="Site criado pela Ambern — visitar ambern.dev"><Image src="/brand/ambern-mark.svg" alt="" width={30} height={30} /><span>Um produto digital criado pela <strong>Ambern</strong><small>ambern.dev ↗</small></span></a>
+        <a className="ambern-credit" href="https://ambern.dev" target="_blank" rel="noreferrer" aria-label="Site criado pela Ambern, Reino Unido — visitar ambern.dev"><Image src="/brand/ambern-mark.svg" alt="" width={30} height={30} /><span>Um produto digital criado pela <strong>Ambern</strong><small><span className="uk-flag" role="img" aria-label="Reino Unido">🇬🇧</span> ambern.dev ↗</small></span></a>
         <div className="footer-links"><a href="/termos">Termos</a><a href="/privacidade">Privacidade</a><a href="/login">Entrar</a><a href="https://github.com/amberndev" target="_blank" rel="noreferrer">GitHub ↗</a></div>
       </footer>
     </main>
