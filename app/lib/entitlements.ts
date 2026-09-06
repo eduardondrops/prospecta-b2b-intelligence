@@ -65,3 +65,15 @@ export function clampRequestedLeads(plan: Plan, requested: number, remaining: nu
   const normalized = Math.max(1, Math.floor(Number.isFinite(requested) ? requested : policy.maxResultsPerSearch));
   return Math.max(0, Math.min(normalized, policy.maxResultsPerSearch, remaining));
 }
+
+export function campaignAllowance(plan: Plan, requested: number, used: number) {
+  const limit = planEntitlements[plan].campaignDailyLimit;
+  const normalized = Math.max(0, Math.floor(Number.isFinite(requested) ? requested : 0));
+  return Math.max(0, Math.min(normalized, limit - Math.max(0, used)));
+}
+
+export function whatsappConnectionAllowed(plan: Plan, requestedTotal: number) {
+  const limit = planEntitlements[plan].whatsappConnections;
+  const normalized = Math.max(0, Math.floor(Number.isFinite(requestedTotal) ? requestedTotal : 0));
+  return limit == null || normalized <= limit;
+}

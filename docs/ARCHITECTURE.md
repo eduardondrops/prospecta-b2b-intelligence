@@ -25,7 +25,9 @@ Prospecta models a workflow in which heterogeneous business records are acquired
 5. Orchestration retrieves authorized records with bounded retries and maps them into a canonical model.
 6. Validation, deduplication, and evidence capture occur before prospect persistence.
 7. After acquisition, the original application settles the reservation with the number of leads actually delivered. Failures settle zero; if reconciliation is unavailable, the original reservation remains as the fail-closed balance.
-8. Structured logs connect user requests, orchestration runs, persistence events, and release versions.
+8. Campaign creation reserves quota in D1 and stores the reservation identifier with the operational campaign in Supabase. The final callback settles the reservation to the number of confirmed deliveries.
+9. Server-to-server quota checks use a shared `PROSPECTA_SERVICE_TOKEN`; the secret never enters client bundles or browser responses.
+10. Structured logs connect user requests, orchestration runs, persistence events, and release versions.
 
 ## Qualification model
 
@@ -37,8 +39,9 @@ The application uses the official Cloudflare `vinext` path for the Next.js App R
 
 ## Data ownership
 
-- D1 is the current system of record for users, sessions, plan entitlements, lead reservations, and settled usage events.
-- Saving lists and preparing campaigns must consult the central D1 policy before operational data is changed; the original application fails closed when that policy is unavailable.
+- D1 is the current system of record for users, sessions, plan entitlements, lead/campaign reservations, and settled usage events.
+- Saving lists, exports, campaigns, and WhatsApp connection creation must consult the central D1 policy before the action; the original application fails closed when that policy is unavailable.
+- Supabase stores `entitlement_reservation_id` only as the cross-system correlation for each campaign. It does not decide the plan or remaining allowance.
 - The synthetic prospect fixture remains presentation-only and is no longer the authenticated customer workspace.
 - Supabase/PostgreSQL remains the current operational store; a consolidated self-hosted PostgreSQL architecture is planned.
 - n8n orchestrates authorized provider calls; it is not the system of record.

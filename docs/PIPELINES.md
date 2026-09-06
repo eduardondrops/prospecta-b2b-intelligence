@@ -61,7 +61,7 @@ Interface original ── seleção ── CSV/webhook/CRM conforme plano
 | Trial Cloudflare | Dataset sintético determinístico | Fonte real autorizada, com máximo de 15 leads por trial |
 | Busca Google original | Implementação existente via n8n | Homologar quotas, custos, retenção e falhas |
 | Base privada original | Implementação existente, somente leitura | Auditar contrato, isolamento e procedência |
-| Identidade e plano | D1 | Busca, salvamento e preparação de campanhas integrados; concluir exportações, contabilização de envios e limites de conexões |
+| Identidade e plano | D1 | Busca, salvamento, exportações, campanhas e novas conexões consultam a mesma política; release da Fase 2 aguarda autorização |
 | Dados operacionais | Supabase e integrações existentes | Formalizar modelo canônico, backup e retenção |
 | Automação | n8n | Versionamento, testes, idempotência e observabilidade |
 
@@ -122,6 +122,19 @@ status por destinatário ── auditoria ── histórico ── interrupção
 ```
 
 Um aviso sobre spam é obrigatório, mas não libera envio irrestrito. O backend deve controlar cadência, duplicidade, opt-out, suspensão e consumo mesmo que a interface seja manipulada.
+
+### Reserva e acerto de campanha
+
+```text
+criar campanha ── reservar quota no D1 ── persistir correlation ID no Supabase
+       │
+       ├── falha antes da fila ── acertar zero
+       └── fila criada ── callbacks idempotentes ── contar enviados/falhas
+                                             │
+                                             └── sem pendentes ── acertar enviados no D1
+```
+
+O segredo `PROSPECTA_SERVICE_TOKEN` autentica somente a comunicação servidor-servidor entre a plataforma operacional e a autoridade de entitlements. Ele nunca vai ao navegador. Exportações pedem autorização ao backend antes de gerar o arquivo, e a criação automática de uma instância consulta o total de WhatsApps ativos antes da inserção.
 
 ## 5. Pipeline de desenvolvimento e publicação
 
@@ -186,3 +199,7 @@ Após uma publicação autorizada, verificar nesta ordem:
 8. Logs não contêm senha, token, hash, salt ou dados desnecessários.
 9. Sessões podem ser revogadas em `/conta/seguranca` e a ação é auditada.
 10. A conta proprietária verificada acessa `/admin`, altera uma conta descartável e gera `audit_events`.
+11. O painel lateral mostra o plano e os saldos reais, e uma tentativa acima do limite informa o motivo e aponta para os planos.
+12. Uma campanha reserva destinatários uma única vez, falhas anteriores à fila acertam zero e o último callback acerta apenas os envios confirmados.
+13. Trial/Essential rejeitam a segunda conexão ativa; Growth aceita até três e rejeita a quarta.
+14. Exportações Google e Base privada são autorizadas e auditadas no servidor antes do download.

@@ -51,9 +51,9 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 
 **Objetivo:** fazer a plataforma aplicar uma única matriz de planos em todas as APIs e telas.
 
-**Status:** em implementação. Busca Google e Base privada já usam a autoridade D1 com reserva antes da consulta, acerto pela quantidade realmente entregue e janela diária de São Paulo. Salvamento de listas e preparação de campanhas consultam a mesma política; campanhas exigem confirmação explícita e respeitam o teto diário do plano. Exportação auditável, contabilização definitiva de envios e limite de conexões de WhatsApp continuam pendentes.
+**Status:** implementação técnica concluída localmente, aguardando revisão, migrações e publicação autorizada. Busca Google e Base privada usam reserva e acerto pela quantidade entregue; salvamento e exportação consultam a política central; campanhas reservam destinatários e acertam o consumo pelos envios confirmados; novas conexões de WhatsApp são limitadas pelo plano. A plataforma exibe saldo de leads, disparos e conexões sem alterar sua identidade visual.
 
-- Formalizar tributos, cancelamento e demais termos comerciais.
+- Formalizar tributos, cancelamento e demais termos comerciais. Esta decisão jurídica/comercial permanece pendente do proprietário e não foi inventada no código.
 - Essential: R$ 49,90/mês, 15 leads/dia e um WhatsApp conectado.
 - Growth: R$ 97,90/mês, 45 leads/dia e três WhatsApps conectados.
 - Scale: limites, integrações e WhatsApps definidos com o time comercial.
@@ -63,6 +63,8 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 - Criar testes de permissão para cada plano.
 
 **Saída:** alterar o plano no painel administrativo muda imediatamente os limites reais do usuário, sem edição manual de código ou SQL.
+
+**Gate de conclusão em produção:** aplicar `0005_operational_quotas.sql`, aplicar `crm-fase-2-entitlements.sql` no Supabase, configurar o mesmo `PROSPECTA_SERVICE_TOKEN` nos dois runtimes, publicar ambos os projetos e executar a checklist da Fase 2. Até isso ocorrer, o status de produção continua sendo o anterior.
 
 ## Fase 3 — experiência gratuita com dados reais
 
@@ -156,7 +158,7 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 ## Próximas decisões do proprietário
 
 1. Escolher a fonte real disponível no trial.
-2. Definir os detalhes de permissões por módulo para Essential e Growth além dos limites de leads/WhatsApp.
+2. Revisar a matriz implementada, na qual todos os módulos permanecem disponíveis e os planos diferem por limites de leads, campanhas e WhatsApp.
 3. Acompanhar a reputação do remetente `acesso@prospectaworbita.site`; SPF, DKIM e DMARC já estão publicados.
 4. Repetir o smoke test com uma conta trial descartável e ampliar os testes de entitlement da Fase 2 antes da cobrança.
 5. Formalizar termos comerciais e política de cancelamento antes de integrar a Amplo Pay.

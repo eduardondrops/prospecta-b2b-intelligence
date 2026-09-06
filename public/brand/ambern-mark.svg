@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="title">
+  <title id="title">Ambern</title>
+  <defs><linearGradient id="amber" x1="18" y1="18" x2="103" y2="104" gradientUnits="userSpaceOnUse"><stop stop-color="#ffbd3b"/><stop offset=".5" stop-color="#e98222"/><stop offset="1" stop-color="#b94d1d"/></linearGradient></defs>
+  <path d="M60 13 109 96H78L60 65 42 96H11L60 13Zm0 26L34 84h15l11-19 11 19h15L60 39Z" fill="url(#amber)" fill-rule="evenodd"/>
+  <circle cx="60" cy="59" r="7" fill="#f5f0e6"/>
+</svg>

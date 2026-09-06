@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://prospectaworbita.site"),
   title: "Prospecta Worbita | Prospecção B2B",
   description: "Pesquisa, qualificação e organização de prospects B2B em um fluxo comercial controlado.",
+  icons: { icon: "/brand/prospecta-mark.svg" },
   openGraph: {
     title: "Prospecta Worbita | Prospecção B2B",
     description: "Transforme sinais de mercado em um pipeline comercial acionável.",

@@ -17,10 +17,20 @@
 6. Confirm the custom domain still belongs to the intended Cloudflare account.
 7. Confirm Wrangler is authenticated with the intended Cloudflare account.
 8. Confirm `RESEND_API_KEY` exists as a Worker secret and the sender domain is verified by the email provider before enabling verification-dependent registration. Wrangler declares this secret as required and must reject a release when it is absent.
+9. Generate one strong `PROSPECTA_SERVICE_TOKEN` outside source control and configure the same value as a Cloudflare Worker secret and a Vercel server environment variable. Never print it in build logs or expose it with `NEXT_PUBLIC_`.
 
 ## Release
 
 When a bridge contract changes, publish in this order: deploy a compatible preview of `captacao-frontend`, apply the D1 migration, deploy the Cloudflare Worker, promote the verified Vercel build, then run the full journey. For Worker-only changes, run `npm run deploy` from an authenticated environment. Record both deployed version identifiers and source commits in the release notes.
+
+For the Phase 2 release, use this order after explicit authorization:
+
+1. Build and verify a Vercel preview containing the backward-compatible campaign columns.
+2. Apply `crm-fase-2-entitlements.sql` in Supabase and verify the new columns/index/constraint.
+3. Apply D1 migration `0005_operational_quotas.sql` remotely.
+4. Configure `PROSPECTA_SERVICE_TOKEN` in Cloudflare and Vercel.
+5. Deploy the Cloudflare Worker, then promote the verified Vercel build.
+6. Execute the Phase 2 tests below and retain both release identifiers for rollback.
 
 ## Verification
 
@@ -35,6 +45,10 @@ When a bridge contract changes, publish in this order: deploy a compatible previ
 9. Request `/api/health` and verify the service reports `status: ok`.
 10. Inspect Cloudflare logs for server errors and sensitive data.
 11. Confirm the custom domain serves the same release as the Workers.dev route.
+12. Confirm the sidebar reports the D1 plan, remaining leads, campaign balance, and WhatsApp allowance.
+13. Verify allowed and blocked search, save, export, campaign, and WhatsApp cases with disposable Trial, Essential, Growth, and Scale accounts.
+14. Complete a mixed campaign (successful and failed recipients) and confirm D1 records only the successful deliveries after the last callback.
+15. Confirm `audit_events` contains export, campaign authorization/settlement, and service authorization without tokens or customer payloads.
 
 ## Rollback
 
