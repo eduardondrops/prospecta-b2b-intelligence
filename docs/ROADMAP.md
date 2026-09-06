@@ -21,7 +21,7 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 
 - Landing page, imagens próprias, planos conceituais, cadastro e login em `prospectaworbita.site`.
 - Usuários, hashes de senha, sessões, planos, validade do trial e consumo armazenados no D1.
-- Trial de três dias, três pesquisas e até cinco resultados por pesquisa, aplicado no servidor.
+- Trial de três dias, até 15 leads entregues no período e até cinco resultados por pesquisa, aplicado no servidor.
 - Cadastro, login, logout, sessão e pesquisa limitada validados em produção.
 - Plataforma original preservada em `app.prospectaworbita.site`.
 - Ponte de acesso: toda conta ativa e verificada recebe a interface original; o D1 continua aplicando quota por plano.
@@ -31,13 +31,13 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 
 **Objetivo:** transformar a fundação atual em um acesso SaaS administrável e recuperável.
 
-**Status:** implementação e migração D1 concluídas; homologação do remetente, deploy e validação ponta a ponta em produção pendentes.
+**Status:** núcleo publicado e validado para a conta proprietária; endurecimento adicional ainda em andamento.
 
-- Confirmar em navegador o redirecionamento completo da conta proprietária e de uma conta trial.
+- Confirmar em navegador o redirecionamento completo da conta proprietária e de uma conta trial. A conta proprietária foi validada; falta repetir a jornada com uma conta trial descartável.
 - Implementar verificação de e-mail, recuperação e troca de senha.
 - Criar revogação de todas as sessões e painel administrativo mínimo de usuários.
 - Criar o papel administrativo auditável para `eduardonunesdrops@gmail.com`, sem manipulação direta de senha.
-- Homologar `acesso@prospectaworbita.site` com SPF, DKIM e DMARC em um provedor transacional.
+- Homologar `acesso@prospectaworbita.site` com SPF, DKIM e DMARC em um provedor transacional. Concluído no Resend; reputação de domínio continua sendo acompanhada.
 - Definir estados de conta: ativa, suspensa, cancelada e pendente de verificação.
 - Aplicar proteção de origem, rate limiting e bot protection em cadastro e login.
 - Centralizar políticas de plano e remover permissões visuais desconectadas do servidor.
@@ -50,6 +50,8 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 ## Fase 2 — permissões e oferta comercial
 
 **Objetivo:** fazer a plataforma aplicar uma única matriz de planos em todas as APIs e telas.
+
+**Status:** em implementação. Busca Google e Base privada já usam a autoridade D1 com reserva antes da consulta, acerto pela quantidade realmente entregue e janela diária de São Paulo. Salvamento, exportação, campanhas e conexões de WhatsApp continuam pendentes.
 
 - Formalizar tributos, cancelamento e demais termos comerciais.
 - Essential: R$ 49,90/mês, 15 leads/dia e um WhatsApp conectado.
@@ -155,13 +157,13 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 
 1. Escolher a fonte real disponível no trial.
 2. Definir os detalhes de permissões por módulo para Essential e Growth além dos limites de leads/WhatsApp.
-3. Concluir a homologação do Resend para `acesso@prospectaworbita.site` e validar SPF, DKIM e DMARC.
-4. Validar o painel administrativo da Fase 1 e construir os testes de entitlement da Fase 2 antes da cobrança.
+3. Acompanhar a reputação do remetente `acesso@prospectaworbita.site`; SPF, DKIM e DMARC já estão publicados.
+4. Repetir o smoke test com uma conta trial descartável e ampliar os testes de entitlement da Fase 2 antes da cobrança.
 5. Formalizar termos comerciais e política de cancelamento antes de integrar a Amplo Pay.
 
 ## Não afirmado como pronto
 
-- Entrega de e-mail e fluxos completos da Fase 1 em produção até a homologação do remetente e o smoke test.
+- Entrega consistente na caixa de entrada não é garantida; o remetente está autenticado e a reputação deve ser acompanhada.
 - Preços validados, cobrança e assinaturas.
 - Política final de permissões para Essential e Growth.
 - Escala, receita, conversão, retenção ou SLA comprovados.

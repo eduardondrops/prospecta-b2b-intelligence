@@ -27,7 +27,7 @@ When a bridge contract changes, publish in this order: deploy a compatible previ
 1. Load the home page over HTTPS.
 2. Create a trial account and confirm that the verification message is delivered without exposing its token in logs.
 3. Verify the email and confirm that the verification response creates the session and opens the original dashboard automatically.
-4. Perform three searches across Busca Google and Base Privada and confirm the fourth is rejected server-side.
+4. Perform searches across Busca Google and Base Privada and confirm the balance is reduced by delivered leads, failed acquisition settles zero, and the plan allowance cannot be exceeded.
 5. Open `/conta/seguranca`, list the active sessions, and revoke a non-current session.
 6. Sign in as the verified owner account, open `/admin`, and change the plan and state of a disposable test account.
 7. Confirm that the administrative change and session revocation appear in `audit_events` without secrets or password material.
@@ -42,4 +42,4 @@ Use the Cloudflare Workers version history to restore the last known-good deploy
 
 ## Phase 1 release state
 
-The Cloudflare zone, custom domain, certificate, D1 database, Worker association, and Resend secret are active. Migration `0002_identity_security.sql` adds verified identities and account controls; `0003_operational_access.sql` adds hashed bridge tokens used to enforce search quotas from the original interface. The application release is complete only after both deployments and the verification checklist pass in production.
+The Cloudflare zone, custom domain, certificate, D1 database, Worker association, and Resend secret are active. Migration `0002_identity_security.sql` adds verified identities and account controls; `0003_operational_access.sql` adds hashed bridge tokens; `0004_lead_entitlements.sql` adds lead quantities, sources, correlation identifiers, and settlement state. The application release is complete only after both deployments and the verification checklist pass in production.

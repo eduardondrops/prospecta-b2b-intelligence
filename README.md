@@ -29,7 +29,7 @@ An operational SaaS foundation for transforming authorized business data into an
 - Automated type checking, dataset safety tests, and production builds in CI.
 - Security and privacy decisions appropriate for a public engineering portfolio.
 - D1-backed accounts, sessions, plan entitlements, and usage events.
-- A three-day trial restricted to three searches and five results per search.
+- A three-day trial restricted to 15 delivered leads overall and five results per search.
 - Marketing, pricing, sign-in, sign-up, and authenticated workspace routes.
 
 ## Product slice

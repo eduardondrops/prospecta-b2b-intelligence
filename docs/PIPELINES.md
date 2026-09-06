@@ -61,7 +61,7 @@ Interface original ── seleção ── CSV/webhook/CRM conforme plano
 | Trial Cloudflare | Dataset sintético determinístico | Fonte real autorizada, com máximo de 15 leads por trial |
 | Busca Google original | Implementação existente via n8n | Homologar quotas, custos, retenção e falhas |
 | Base privada original | Implementação existente, somente leitura | Auditar contrato, isolamento e procedência |
-| Identidade e plano | D1 | Homologar e-mail transacional e concluir a verificação produtiva da Fase 1 |
+| Identidade e plano | D1 | Remetente homologado; ampliar a matriz de entitlements da Fase 2 para salvamento, exportação, campanhas e integrações |
 | Dados operacionais | Supabase e integrações existentes | Formalizar modelo canônico, backup e retenção |
 | Automação | n8n | Versionamento, testes, idempotência e observabilidade |
 
@@ -178,10 +178,10 @@ Após uma publicação autorizada, verificar nesta ordem:
 
 1. Home e imagens carregam em `prospectaworbita.site`.
 2. Cadastro cria uma conta trial sem travar.
-3. Sessão é restaurada e uma pesquisa devolve no máximo cinco resultados.
-4. Consumo passa de três para dois e permanece após novo login.
-5. Trial recebe a mesma interface original e tem a quarta pesquisa bloqueada no servidor.
-6. Essential, Growth e Scale recebem a mesma interface com seus limites próprios.
+3. Sessão é restaurada e uma pesquisa trial devolve no máximo cinco resultados.
+4. O saldo diminui pelo número de leads realmente entregue, permanece após novo login e não é consumido quando a aquisição falha.
+5. Trial recebe a mesma interface original e não ultrapassa 15 leads durante os três dias.
+6. Essential e Growth renovam 15 e 45 leads, respectivamente, à meia-noite em `America/Sao_Paulo`; Scale usa o limite técnico/comercial configurado.
 7. As páginas, fontes, cores e navegação originais permanecem intactas.
 8. Logs não contêm senha, token, hash, salt ou dados desnecessários.
 9. Sessões podem ser revogadas em `/conta/seguranca` e a ação é auditada.

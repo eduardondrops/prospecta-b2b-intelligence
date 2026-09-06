@@ -25,7 +25,7 @@ The access bridge is implemented by `app/api/original-access/route.ts` in this r
 4. Treat Supabase as the operational store used by the original full application. Never silently migrate or duplicate customer data between stores.
 5. Never read, print, commit, or ask the user to paste passwords, password hashes, salts, service-role keys, API keys, tokens, or private customer data.
 6. Do not change a user's plan, reset credentials, delete an account, run a remote migration, or alter production DNS without explicit authorization.
-7. Trial permissions are enforced server-side: three days, three searches, and at most five results per search. A trial must be able to complete a useful search.
+7. Trial permissions are enforced server-side: three days, at most 15 delivered leads in the period, and at most five results per search. A trial must be able to complete a useful search.
 8. Trial, Essential, Growth, and Scale use the original full-platform interface. Plans differ through server-side quotas and entitlements, not by replacing the interface.
 9. Public demo data in this repository is synthetic. Never present it as customer, revenue, conversion, or acquisition evidence.
 10. Use only authorized business-data sources and retain provenance when live acquisition is introduced.
@@ -95,7 +95,7 @@ A change is complete only when the code builds, relevant tests pass, authorizati
 
 - `prospectaworbita.site` serves the public site, registration, login, account administration, and entitlement authority from Cloudflare Workers.
 - Registration, logout, login, session restoration, and one restricted trial search were smoke-tested in production.
-- Trial search returns at most five results and decrements the server-side allowance.
+- Trial search returns at most five results and decrements the server-side allowance by leads actually delivered.
 - `app.prospectaworbita.site` is attached to the original Vercel project.
 - Every active verified plan requests a short-lived bridge token and is redirected to the original application; search quotas remain authoritative in D1.
 - The end-to-end redirect for the owner's real account requires a user-performed login test because agents must not know or reset the password.

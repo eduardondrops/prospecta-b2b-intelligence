@@ -16,7 +16,7 @@ type AdminUserRow = {
   trial_ends_at: string;
   created_at: string;
   active_sessions: number;
-  usage_events: number;
+  usage_leads: number;
 };
 
 export async function GET(request: Request) {
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
   const result = await database().prepare(
     `SELECT u.id, u.name, u.email, u.company, u.plan, u.role, u.status, u.email_verified_at, u.trial_ends_at, u.created_at,
        (SELECT COUNT(*) FROM sessions s WHERE s.user_id = u.id AND s.revoked_at IS NULL AND s.expires_at > CURRENT_TIMESTAMP) AS active_sessions,
-       (SELECT COUNT(*) FROM usage_events e WHERE e.user_id = u.id) AS usage_events
+       (SELECT COALESCE(SUM(e.quantity), 0) FROM usage_events e WHERE e.user_id = u.id) AS usage_leads
      FROM users u WHERE u.name LIKE ? OR u.email LIKE ? OR u.company LIKE ?
      ORDER BY u.created_at DESC LIMIT 100`,
   ).bind(query, query, query).all<AdminUserRow>();

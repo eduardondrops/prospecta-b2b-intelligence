@@ -162,10 +162,3 @@ export async function requireAdmin(request: Request) {
   const user = await currentUser(request);
   return user?.role === "admin" ? user : null;
 }
-
-export const planLimits: Record<Plan, { searches: number; results: number; export: boolean; enrichment: boolean; automation: boolean }> = {
-  trial: { searches: 3, results: 5, export: false, enrichment: false, automation: false },
-  essential: { searches: 150, results: 25, export: true, enrichment: false, automation: false },
-  growth: { searches: 1_000, results: 100, export: true, enrichment: true, automation: true },
-  scale: { searches: 5_000, results: 250, export: true, enrichment: true, automation: true },
-};
