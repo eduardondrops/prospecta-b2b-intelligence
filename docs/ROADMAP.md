@@ -51,7 +51,7 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 
 **Objetivo:** fazer a plataforma aplicar uma única matriz de planos em todas as APIs e telas.
 
-**Status:** em implementação. Busca Google e Base privada já usam a autoridade D1 com reserva antes da consulta, acerto pela quantidade realmente entregue e janela diária de São Paulo. Salvamento, exportação, campanhas e conexões de WhatsApp continuam pendentes.
+**Status:** em implementação. Busca Google e Base privada já usam a autoridade D1 com reserva antes da consulta, acerto pela quantidade realmente entregue e janela diária de São Paulo. Salvamento de listas e preparação de campanhas consultam a mesma política; campanhas exigem confirmação explícita e respeitam o teto diário do plano. Exportação auditável, contabilização definitiva de envios e limite de conexões de WhatsApp continuam pendentes.
 
 - Formalizar tributos, cancelamento e demais termos comerciais.
 - Essential: R$ 49,90/mês, 15 leads/dia e um WhatsApp conectado.

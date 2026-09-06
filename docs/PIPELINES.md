@@ -61,7 +61,7 @@ Interface original ── seleção ── CSV/webhook/CRM conforme plano
 | Trial Cloudflare | Dataset sintético determinístico | Fonte real autorizada, com máximo de 15 leads por trial |
 | Busca Google original | Implementação existente via n8n | Homologar quotas, custos, retenção e falhas |
 | Base privada original | Implementação existente, somente leitura | Auditar contrato, isolamento e procedência |
-| Identidade e plano | D1 | Remetente homologado; ampliar a matriz de entitlements da Fase 2 para salvamento, exportação, campanhas e integrações |
+| Identidade e plano | D1 | Busca, salvamento e preparação de campanhas integrados; concluir exportações, contabilização de envios e limites de conexões |
 | Dados operacionais | Supabase e integrações existentes | Formalizar modelo canônico, backup e retenção |
 | Automação | n8n | Versionamento, testes, idempotência e observabilidade |
 

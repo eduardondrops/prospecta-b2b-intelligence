@@ -38,6 +38,7 @@ The application uses the official Cloudflare `vinext` path for the Next.js App R
 ## Data ownership
 
 - D1 is the current system of record for users, sessions, plan entitlements, lead reservations, and settled usage events.
+- Saving lists and preparing campaigns must consult the central D1 policy before operational data is changed; the original application fails closed when that policy is unavailable.
 - The synthetic prospect fixture remains presentation-only and is no longer the authenticated customer workspace.
 - Supabase/PostgreSQL remains the current operational store; a consolidated self-hosted PostgreSQL architecture is planned.
 - n8n orchestrates authorized provider calls; it is not the system of record.

@@ -7,17 +7,22 @@ export type PlanEntitlement = {
   maxResultsPerSearch: number;
   whatsappConnections: number | null;
   period: EntitlementPeriod;
+  save: boolean;
   export: boolean;
   enrichment: boolean;
   automation: boolean;
+  campaign: boolean;
+  campaignDailyLimit: number;
+  campaignTotalLimit: number | null;
+  manualCampaignConfirmation: boolean;
 };
 
 // Scale uses a conservative technical guardrail until a commercial override model is approved.
 export const planEntitlements: Record<Plan, PlanEntitlement> = {
-  trial: { leadLimit: 15, maxResultsPerSearch: 5, whatsappConnections: 1, period: "trial", export: false, enrichment: false, automation: false },
-  essential: { leadLimit: 15, maxResultsPerSearch: 15, whatsappConnections: 1, period: "day", export: true, enrichment: false, automation: false },
-  growth: { leadLimit: 45, maxResultsPerSearch: 45, whatsappConnections: 3, period: "day", export: true, enrichment: true, automation: true },
-  scale: { leadLimit: 5_000, maxResultsPerSearch: 250, whatsappConnections: null, period: "day", export: true, enrichment: true, automation: true },
+  trial: { leadLimit: 15, maxResultsPerSearch: 5, whatsappConnections: 1, period: "trial", save: true, export: true, enrichment: false, automation: true, campaign: true, campaignDailyLimit: 15, campaignTotalLimit: 15, manualCampaignConfirmation: true },
+  essential: { leadLimit: 15, maxResultsPerSearch: 15, whatsappConnections: 1, period: "day", save: true, export: true, enrichment: false, automation: true, campaign: true, campaignDailyLimit: 15, campaignTotalLimit: null, manualCampaignConfirmation: true },
+  growth: { leadLimit: 45, maxResultsPerSearch: 45, whatsappConnections: 3, period: "day", save: true, export: true, enrichment: true, automation: true, campaign: true, campaignDailyLimit: 45, campaignTotalLimit: null, manualCampaignConfirmation: true },
+  scale: { leadLimit: 5_000, maxResultsPerSearch: 250, whatsappConnections: null, period: "day", save: true, export: true, enrichment: true, automation: true, campaign: true, campaignDailyLimit: 5_000, campaignTotalLimit: null, manualCampaignConfirmation: true },
 };
 
 const SAO_PAULO_TIME_ZONE = "America/Sao_Paulo";
