@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import { DashboardDemo } from "./components/dashboard-demo";
+import { HeroNetworkMap } from "./components/hero-network-map";
 import { StackLogos } from "./components/stack-logos";
 
 const capabilities = [
@@ -37,9 +38,7 @@ export default function Home() {
           <p className="disclosure">3 dias · até 15 leads · confirmação manual de disparos · sem cartão</p>
         </div>
         <div className="hero-visual">
-          <Image className="hero-image" src="/images/prospecta-hero-v2.png" alt="Ambiente de inteligência comercial com mapa do Brasil e conexões empresariais qualificadas" fill priority quality={95} sizes="(max-width: 900px) 100vw, 48vw" />
-          <div className="signal-card signal-card-top"><span>SINAL QUALIFICADO</span><strong>Potencial identificado</strong><small>Presença digital e contato validados</small></div>
-          <div className="signal-card signal-card-bottom"><span>FLUXO COMERCIAL</span><strong>Pronto para análise</strong><small>Pesquisa, validação e organização</small></div>
+          <HeroNetworkMap />
         </div>
       </section>
 

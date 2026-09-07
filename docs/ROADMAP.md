@@ -155,6 +155,13 @@ Transformar critérios comerciais em leads B2B reais, rastreáveis e acionáveis
 - Filas, cache, failover de provedores e orçamentos de consumo.
 - SLOs medidos, testes de recuperação e resposta formal a incidentes.
 
+## Refinamento visual do hero — setembro de 2026
+
+- Prévia local: mapa vetorial estático do Brasil com relevo, malha de conexões e pontos ilustrativos animados em dourado e verde-claro; substitui a fotografia do monitor e os dois cards sobrepostos.
+- A frase solicitada pelo proprietário, “+20M de empresas cadastradas”, aparece por caracteres e permanece completa ao fim da animação, sem depender de largura fixa. O valor é conteúdo fornecido pelo proprietário, não uma contagem consultada pelo componente.
+- Composição responsiva e alternativa estática para preferência de movimento reduzido. Sem mudança em aquisição de dados, identidade, permissões ou planos.
+- Validação: tipos, testes e build; inspeção de desktop e celular, incluindo a visibilidade das últimas letras. Revisão visual aprovada pelo proprietário para versionamento no GitHub; publicação na Cloudflare pendente.
+
 ## Próximas decisões do proprietário
 
 1. Escolher a fonte real disponível no trial.
